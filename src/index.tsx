@@ -1,12 +1,14 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';
+import './index.scss';
 import App from './App';
+// import {Simulator} from './Simulator';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    {/* <Simulator /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
