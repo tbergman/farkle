@@ -14,7 +14,7 @@ export class FarkleLogic {
   static STRAIGHT_SCORE = 1000;
   static THREE_PAIR_SCORE = 1000;
   static REQUIRED_POINTS_ON_BOARD = 1000
-  static END_GAME_POINTS = 1200
+  static END_GAME_POINTS = 10000
   
   static scoreMove(_dice: DiceArray): number {
     const values = _dice.map((d) => d.value);
