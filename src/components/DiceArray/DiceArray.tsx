@@ -15,9 +15,10 @@ const DiceArrayComponent = ({
       {turnState !== 'start' &&
         dice.map((d: number, i: number) => (
           <Die
-            isFrozen={frozen[i]}
             value={d}
             index={i}
+            isFrozen={frozen[i]}
+            isRolling={!frozen[i] && turnState === 'rolling'}
             onDieClick={() => onDieClick(i)}
           />
         ))}

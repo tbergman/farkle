@@ -60,7 +60,7 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
       'rollUnfrozen',
     ],
     after: {
-      1000: [
+      100: [
         {
           target: 'observing',
           cond: 'isValidMoveAvailable',
@@ -149,7 +149,9 @@ export const turnGuards: turnGuard = {
         mergeBoolean(c.frozen, c.frozenThisRoll)
       )
     )
-
+    console.log(
+      `Trying to end turn. Is this a valid move? ${validMove}. Turn score: ${c.turnScore}`
+    );
     return (
       validMove &&
       (c.scores[c.player] > 1000 || c.turnScore >= 1000)

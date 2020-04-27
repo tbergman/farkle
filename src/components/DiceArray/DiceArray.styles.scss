@@ -3,15 +3,4 @@
   grid-template-columns: 1fr 1fr;
   grid-gap: 8px;
   padding: 8px;
-
-  .die {
-    height: 48px;
-    width: 48px;
-    background-color: white;
-    border: 1px solid black;
-  }
-
-  .die.frozen {
-    background-color: #ddf;
-  }
 }
