@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
-// import {Simulator} from './Simulator';
+import {Simulator} from './Simulator';
 import * as serviceWorker from './serviceWorker';
 
 ReactDOM.render(

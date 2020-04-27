@@ -1,22 +1,21 @@
 import React from 'react';
-import { Player } from '../../game/Player';
 
 type ScoreTableProps = {
-  players: Array<Player>
+  scores: Array<number>
 }
-const ScoreTable = ({players}: ScoreTableProps) => (
+const ScoreTable = ({scores}: ScoreTableProps) => (
   <table>
     <thead>
       <tr>
-        {players.map((player) => (
-          <th key={player.id}>Player {player.id + 1}</th>
+        {scores.map((_,id) => (
+          <th key={id}>Player {id + 1}</th>
         ))}
       </tr>
     </thead>
     <tbody>
       <tr>
-        {players.map((player) => (
-          <td key={player.id}>{player.score}</td>
+        {scores.map((score, id) => (
+          <td key={id}>{score}</td>
         ))}
       </tr>
     </tbody>

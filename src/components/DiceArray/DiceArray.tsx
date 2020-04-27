@@ -1,38 +1,35 @@
-import React, { useEffect } from 'react';
-import { DiceArray } from '../../game/GameDice';
-import { Die } from '../../game/Die';
+import React from 'react';
+import Die from "../Die"
 import './DiceArray.styles.scss';
+import { DiceValueArray } from '../../game/Die';
+import { StateValue } from 'xstate';
 
-const DiceArrayComponent = ({turnState, dice, frozen, onClickDie}: DiceArrayComponentProps) => {
-
-  // useEffect(() => {
-  //   console.log('Frozen updated', frozen)
-  // }, [frozen])
-
+const DiceArrayComponent = ({
+  turnState,
+  dice,
+  frozen,
+  onDieClick,
+}: DiceArrayComponentProps) => {
   return (
     <div className="dice-array">
-    { turnState !== 'start' &&
-      dice.map((d: Die, i: number) => (
-          <button
-            className={
-              frozen && frozen.map((d) => d.id).includes(i) ? 'frozen die' : 'unfrozen die'
-            }
-            key={i}
-            onClick={() => onClickDie(i)}
-          >
-            {d.value}
-          </button>
-        )
-      )
-    }
+      {turnState !== 'start' &&
+        dice.map((d: number, i: number) => (
+          <Die
+            value={d}
+            index={i}
+            isFrozen={frozen[i]}
+            isRolling={!frozen[i] && turnState === 'rolling'}
+            onDieClick={() => onDieClick(i)}
+          />
+        ))}
     </div>
-  )
+  );
 };
 
 type DiceArrayComponentProps = {
-  turnState: string | undefined,
-  dice: DiceArray, 
-  frozen: DiceArray,
-  onClickDie: Function
+  turnState: StateValue,
+  dice: DiceValueArray, 
+  frozen: Array<boolean>,
+  onDieClick: Function
 } 
 export default DiceArrayComponent;

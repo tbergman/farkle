@@ -1,8 +1,6 @@
 import { FarkleLogic } from "../FarkleLogic"
 import { DiceValueArray } from "../Die";
 
-const toDice = (arr: DiceValueArray) => FarkleLogic.DiceArrayFromValues(arr);
-
 test('Computes Straits', () => {
   expect(FarkleLogic.isStraight([1,2,3,4,5,6])).toBeTruthy()
   expect(FarkleLogic.isStraight([1,2,3,4,5])).toBeFalsy()
@@ -42,81 +40,81 @@ test('getFaceValuesOfTriples', () => {
 
 test('Valid move exists', () => {
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([1,2,3,4,5,6])
-  )).toBeTruthy()
+    [1,2,3,4,5,6])
+  ).toBeTruthy()
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([1,2,3,4,6,6])
-  )).toBeTruthy()
+    [1,2,3,4,6,6])
+  ).toBeTruthy()
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([2,2,3,3,4,6])
-  )).toBeFalsy()
+    [2,2,3,3,4,6])
+  ).toBeFalsy()
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([1])
-  )).toBeTruthy()
+    [1])
+  ).toBeTruthy()
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([2])
-  )).toBeFalsy()
+    [2])
+  ).toBeFalsy()
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([2,2])
-  )).toBeFalsy()
+    [2,2])
+  ).toBeFalsy()
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([2,2,2])
-  )).toBeTruthy()
+    [2,2,2])
+  ).toBeTruthy()
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([2,2,3,3,4,4])
-  )).toBeTruthy()
+    [2,2,3,3,4,4])
+  ).toBeTruthy()
   expect(FarkleLogic.doesValidMoveExist(
-    toDice([])
-  )).toBeFalsy()
+    [])
+  ).toBeFalsy()
 })
 
 test('scoreMove', () => {
   expect(
     FarkleLogic.scoreMove(
-      toDice([1, 2, 3, 4, 5, 6]))
-  ).toEqual(1000);
+      [1, 2, 3, 4, 5, 6]))
+  .toEqual(1000);
   
   expect(
     FarkleLogic.scoreMove(
-      toDice([1, 2, 1, 2, 1, 2]))
-  ).toEqual(1200);
+      [1, 2, 1, 2, 1, 2]))
+  .toEqual(1200);
   
   expect(
     FarkleLogic.scoreMove(
-      toDice([1, 2, 3, 1, 2, 3]))
-  ).toEqual(1000);
+      [1, 2, 3, 1, 2, 3]))
+  .toEqual(1000);
   
   expect(
     FarkleLogic.scoreMove(
-      toDice([5, 5, 5, 1, 2, 3]))
-  ).toEqual(0);
+      [5, 5, 5, 1, 2, 3]))
+  .toEqual(0);
   
   expect(
     FarkleLogic.scoreMove(
-      toDice([5, 5, 5, 1]))
-  ).toEqual(600);
+      [5, 5, 5, 1]))
+  .toEqual(600);
 });
 
 test('Best scoring move', () => {
-  expect(FarkleLogic.getBestScoringMove(toDice([5, 5, 5, 3, 3, 3]))).toEqual(
-    toDice([5, 5, 5, 3, 3, 3])
+  expect(FarkleLogic.getBestScoringMove([5, 5, 5, 3, 3, 3])).toEqual(
+    [5, 5, 5, 3, 3, 3]
   );
-  expect(FarkleLogic.getBestScoringMove(toDice([2, 5, 5, 3, 3, 3]))).toEqual(
-    toDice([5, 5, 3, 3, 3])
+  expect(FarkleLogic.getBestScoringMove([2, 5, 5, 3, 3, 3])).toEqual(
+    [5, 5, 3, 3, 3]
   );
-  expect(FarkleLogic.getBestScoringMove(toDice([2, 6, 4, 3, 3, 3]))).toEqual(
-    toDice([3, 3, 3])
+  expect(FarkleLogic.getBestScoringMove([2, 6, 4, 3, 3, 3])).toEqual(
+    [3, 3, 3]
   );
-  expect(FarkleLogic.getBestScoringMove(toDice([1, 5, 1, 5, 1, 5]))).toEqual(
-    toDice([1,5,1,5,1,5])
+  expect(FarkleLogic.getBestScoringMove([1, 5, 1, 5, 1, 5])).toEqual(
+    [1,5,1,5,1,5]
   );
-  expect(FarkleLogic.getBestScoringMove(toDice([2, 3, 4, 4, 6]))).toEqual(
-    toDice([])
+  expect(FarkleLogic.getBestScoringMove([2, 3, 4, 4, 6])).toEqual(
+    []
   );
-  expect(FarkleLogic.getBestScoringMove(toDice([1]))).toEqual(
-    toDice([1])
+  expect(FarkleLogic.getBestScoringMove([1])).toEqual(
+    [1]
   );
-  expect(FarkleLogic.getBestScoringMove(toDice([]))).toEqual(
-    toDice([])
+  expect(FarkleLogic.getBestScoringMove([])).toEqual(
+    []
   );
 })
