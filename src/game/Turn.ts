@@ -154,7 +154,9 @@ export const turnGuards: turnGuard = {
     );
     return (
       validMove &&
-      (c.scores[c.player] > 1000 || c.turnScore >= 1000)
+      (c.scores[c.player] > 1000 || 
+        (c.turnScore + c.scoreThisRoll) >= 1000
+      )
     );
   }
 };
