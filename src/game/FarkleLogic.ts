@@ -1,4 +1,4 @@
-import { DiceArray } from "./GameDice";
+// import { DiceArray } from "./GameDice";
 import { Die, DieValue, DiceValueArray } from "./Die";
 
 const countIf = (arr: Array<any>, callback: Function):number => {
@@ -16,23 +16,22 @@ export class FarkleLogic {
   static REQUIRED_POINTS_ON_BOARD = 1000
   static END_GAME_POINTS = 10000
   
-  static scoreMove(_dice: DiceArray): number {
-    const values = _dice.map((d) => d.value);
+  static scoreMove(_dice: DiceValueArray): number {
     let score = 0;
     if (!FarkleLogic.isValidMove(_dice)) {
       return 0;
     } else {
-      if (FarkleLogic.isStraight(values)) {
+      if (FarkleLogic.isStraight(_dice)) {
         return FarkleLogic.STRAIGHT_SCORE;
-      } else if (FarkleLogic.isThreePairs(values)) {
+      } else if (FarkleLogic.isThreePairs(_dice)) {
         return FarkleLogic.THREE_PAIR_SCORE;
       }
       /// score triples
-      const triples = FarkleLogic.getFaceValuesOfTriples(values);
+      const triples = FarkleLogic.getFaceValuesOfTriples(_dice);
       if (!!triples.length) {
         for (let t of triples) {
           const baseScore = t === 1 ? 1000 : t * 100;
-          const countVals = values.filter((val) => val === t).length;
+          const countVals = _dice.filter((val) => val === t).length;
           if (countVals > 3) {
             const additionalScore = (countVals - 3) * baseScore;
             score += baseScore + additionalScore;
@@ -43,21 +42,21 @@ export class FarkleLogic {
       }
 
       if (!triples.length || !triples.includes(1)) {
-        const ones = values.filter((v) => v === 1).length;
+        const ones = _dice.filter((v) => v === 1).length;
         score += ones * FarkleLogic.ONE_SCORE;
       }
 
       if (!triples.length || !triples.includes(5)) {
-        const fives = values.filter((v) => v === 5).length;
+        const fives = _dice.filter((v) => v === 5).length;
         score += fives * FarkleLogic.FIVE_SCORE;
       }
     }
     return score;
   }
 
-  static doesValidMoveExist(_diceToCheck: DiceArray):boolean {
+  static doesValidMoveExist(_diceToCheck: DiceValueArray):boolean {
     const validValues = [1, 5];
-    const diceValues = _diceToCheck.map((die) => die.value);
+    const diceValues = _diceToCheck.map((die) => die);
     validValues.push(...FarkleLogic.getFaceValuesOfTriples(diceValues));
     return (
       FarkleLogic.isStraight(diceValues) ||
@@ -66,33 +65,30 @@ export class FarkleLogic {
     );
   }
 
-  static getBestScoringMove(_diceToCheck: DiceArray): DiceArray {
+  static getBestScoringMove(_diceToCheck: DiceValueArray): DiceValueArray {
     if (!FarkleLogic.doesValidMoveExist(_diceToCheck)) return []
-    
-    const _vals = _diceToCheck.map(d => d.value)
-    if (FarkleLogic.isStraight(_vals) || FarkleLogic.isThreePairs(_vals)) {
+    if (FarkleLogic.isStraight(_diceToCheck) || FarkleLogic.isThreePairs(_diceToCheck)) {
       return _diceToCheck
     }
-    const triples = FarkleLogic.getFaceValuesOfTriples(_vals)
+    const triples = FarkleLogic.getFaceValuesOfTriples(_diceToCheck)
     const scoringVals = [1, 5, ...triples];
-    return _diceToCheck.filter((d) => scoringVals.includes(d.value));
+    return _diceToCheck.filter((d) => scoringVals.includes(d));
   }
 
-  static isValidMove(_diceToCheck: DiceArray): boolean {
+  static isValidMove(_diceToCheck: DiceValueArray): boolean {
     const validValues = [1, 5];
-    const diceValues = _diceToCheck.map((die) => die.value);
-    validValues.push(...FarkleLogic.getFaceValuesOfTriples(diceValues));
+    validValues.push(...FarkleLogic.getFaceValuesOfTriples(_diceToCheck));
 
     return (
-      FarkleLogic.isStraight(diceValues) ||
-      FarkleLogic.isThreePairs(diceValues) ||
-      diceValues.every((value) => validValues.includes(value))
+      FarkleLogic.isStraight(_diceToCheck) ||
+      FarkleLogic.isThreePairs(_diceToCheck) ||
+      _diceToCheck.every((value) => validValues.includes(value))
     );
   }
 
-  static DiceArrayFromValues(_values: Array<DieValue>): DiceArray {
-    return _values.map(_val => new Die(-1, _val))
-  }
+  // static DiceArrayFromValues(_values: DiceValueArray): DiceArray {
+  //   return _values.map(_val => new Die(-1, _val))
+  // }
 
   static isStraight(_dice: DiceValueArray): boolean {
     if (_dice.length !== FarkleLogic.DICE_COUNT) return false;

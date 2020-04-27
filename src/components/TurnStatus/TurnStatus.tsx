@@ -1,31 +1,21 @@
-import React, { useEffect, useState } from 'react';
-import { Player } from '../../game/Player';
-import { useObservable } from '../../hooks/useObservable';
-//import { Test } from './TurnStatus.styles';
+import React from 'react';
+import { StateValue } from 'xstate';
 
-const TurnStatus = ({player}: TurnStatusProps) => {
-  useEffect(() => {
-    console.log(score);
-  })
-
-  const [score, setScore] = useState(0)
-  useEffect(() => {
-    setScore(player.currentTurn ? player.currentTurn.tempScore : 0);
-  }, [player.currentTurn, player.currentTurn?.tempScore]);
+const TurnStatus = ({playerId, turnScore, turnState}: TurnStatusProps) => {
   
-  const turnState = useObservable(player.turnState$)
-
   return (
     <>
-      <h3>Player {player.id + 1}</h3>
-      {turnState && <h4>{turnState.value}</h4>}
-      <h4>Score this turn: {score}</h4>
+      <h3>Player {playerId + 1}</h3>
+      <h4>{turnState}</h4>  
+      <h4>Score this turn: {turnScore}</h4>
     </>
   );
 };
 
 type TurnStatusProps = {
-  player: Player
+  playerId: number
+  turnScore: number,
+  turnState: StateValue
 }
 
 export default TurnStatus;
