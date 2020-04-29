@@ -12,16 +12,18 @@ const DiceArrayComponent = ({
 }: DiceArrayComponentProps) => {
   return (
     <div className="dice-array">
-      {turnState !== 'start' &&
-        dice.map((d: number, i: number) => (
-          <Die
-            value={d}
-            index={i}
-            isFrozen={frozen[i]}
-            isRolling={!frozen[i] && turnState === 'rolling'}
-            onDieClick={() => onDieClick(i)}
-          />
-        ))}
+      {dice.map(
+        (d: number, i: number) =>
+          turnState !== 'start' && (
+            <Die
+              value={d}
+              index={i}
+              isFrozen={frozen[i]}
+              isRolling={!frozen[i] && turnState === 'rolling'}
+              onDieClick={() => onDieClick(i)}
+            />
+          )
+      )}
     </div>
   );
 };
