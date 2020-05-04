@@ -2,13 +2,13 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
-import {Simulator} from './Simulator';
 import * as serviceWorker from './serviceWorker';
+import ThreeCanvas from './three/ThreeCanvas';
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
-    {/* <Simulator /> */}
+    {/* <App /> */}
+    <ThreeCanvas />
   </React.StrictMode>,
   document.getElementById('root')
 );
