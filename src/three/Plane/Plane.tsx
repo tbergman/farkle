@@ -9,7 +9,7 @@ type PlaneProps = {
 
 function Plane({position}: PlaneProps) {
   // Register plane as a physics body with zero mass
-  const ref = useCannon({mass: 0}, (body:CANNON.Body) => {
+  const {ref} = useCannon({mass: 0}, (body:CANNON.Body) => {
     body.addShape(new CANNON.Plane());
     body.position.set(...position);
   });

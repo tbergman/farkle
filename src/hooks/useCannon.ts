@@ -22,5 +22,5 @@ export function useCannon({...props}, callback: Function, deps = []) {
       ref.current.quaternion.copy(body.quaternion);
     }
   });
-  return ref;
+  return {ref, body};
 }
