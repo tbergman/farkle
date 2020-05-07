@@ -71,6 +71,7 @@ const FarkleThreeCanvas = ({gameStateValue, frozenDice, sendGameEvent} : FarkleT
         {/* <arrowHelper ref={arrowHelperRef} /> */}
         {/* <planeHelper plane={new THREE.Plane(new THREE.Vector3(0, 0, 1))} size={10} /> */}
         {/* <gridHelper /> */}
+
         <Box position={[0, 0, 0]} scale={[0.1, 0.1, 0.1]} />
         <Box position={[5, 5, 0]} scale={[0.1, 0.1, 0.1]} />
         <Box position={[5, -5, 0]} scale={[0.1, 0.1, 0.1]} />
@@ -79,53 +80,21 @@ const FarkleThreeCanvas = ({gameStateValue, frozenDice, sendGameEvent} : FarkleT
 
         <CannonContextProvider>
           <Plane position={[0, 0, 0]} />
-          <Die3DComponent
-            key={0}
-            id={0}
-            isFrozen={frozenDice[0]}
-            onFreeze={(e: THREE.Event) => handleFreeze(0)}
-            onValueSet={(v: DieValue) => setValueForDie(0, v)}
-          />
-          <Die3DComponent
-            key={1}
-            id={1}
-            isFrozen={frozenDice[1]}
-            onFreeze={(e: THREE.Event) => handleFreeze(1)}
-            onValueSet={(v: DieValue) => setValueForDie(1, v)}
-          />
-          <Die3DComponent
-            key={2}
-            id={2}
-            isFrozen={frozenDice[2]}
-            onFreeze={(e: THREE.Event) => handleFreeze(2)}
-            onValueSet={(v: DieValue) => setValueForDie(2, v)}
-          />
-          <Die3DComponent
-            key={3}
-            id={3}
-            isFrozen={frozenDice[3]}
-            onFreeze={(e: THREE.Event) => handleFreeze(3)}
-            onValueSet={(v: DieValue) => setValueForDie(3, v)}
-          />
-          <Die3DComponent
-            key={4}
-            id={4}
-            isFrozen={frozenDice[4]}
-            onFreeze={(e: THREE.Event) => handleFreeze(4)}
-            onValueSet={(v: DieValue) => setValueForDie(4, v)}
-          />
-          <Die3DComponent
-            key={5}
-            id={5}
-            isFrozen={frozenDice[5]}
-            onFreeze={(e: THREE.Event) => handleFreeze(5)}
-            onValueSet={(v: DieValue) => setValueForDie(5, v)}
-          />
+          {
+            _dieIds.map(id => 
+              <Die3DComponent
+                key={id}
+                id={id}
+                isFrozen={frozenDice[id]}
+                onFreeze={(e: THREE.Event) => handleFreeze(id)}
+                onValueSet={(v: DieValue) => setValueForDie(id, v)}
+              />
+            )
+          }
         </CannonContextProvider>
       </Canvas>
     </>
   );
 }
-
 
 export default FarkleThreeCanvas;

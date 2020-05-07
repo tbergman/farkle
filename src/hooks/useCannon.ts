@@ -11,7 +11,7 @@ export function useCannon({...props}, callback: Function, deps = []) {
   useEffect(() => {
     callback(body); // Call function so the user can add shapes
     cannonContext.addBody(body); // Add body to world on mount
-    return () => cannonContext.removeBody(body); // Remove body on unmount
+    return () => cannonContext.remove(body) // Remove body on unmount
   }, deps);
   useFrame(() => {
     // Transport cannon physics into the referenced threejs object

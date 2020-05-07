@@ -4,10 +4,14 @@ import React, {useEffect, useState } from 'react';
 import { useFrame} from 'react-three-fiber';
 
 type CannonContextProps = {
-  children: JSX.Element | JSX.Element[]
+  children: React.ReactNode
 }
 
-export const CannonContext = React.createContext(null as any)
+interface CannonContextInterface {
+  world: CANNON.World | null,
+}
+
+export const CannonContext = React.createContext<CANNON.World>(new CANNON.World());
 export const CannonContextProvider = ({children}: CannonContextProps) => {
   // Set up physics
   const [world] = useState(() => new CANNON.World());
