@@ -1,3 +1,3 @@
-import ThreeCanvas from './ThreeCanvas';
+import FarkleThreeCanvas from './ThreeCanvas';
 
-export default ThreeCanvas;
+export default FarkleThreeCanvas;

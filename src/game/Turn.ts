@@ -179,6 +179,7 @@ export const turnActions: turnAction = {
     frozenThisRoll: (c,e) => {
       if (e.type === 'FREEZE') {
         const id = e.dieId;
+        console.log(`XSTATE: Freezing ${id}`)
         // if this die is not already frozen from another roll 
         if (!c.frozen[id]) {
           const _tmp_frzn = [...c.frozenThisRoll]

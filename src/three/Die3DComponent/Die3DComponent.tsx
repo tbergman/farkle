@@ -1,66 +1,66 @@
 import * as THREE from 'three';
-import React, { useState, Suspense, useContext } from 'react';
-import { useLoader, useFrame, useCamera, useThree } from 'react-three-fiber';
+import React, { useState, Suspense, useRef, useEffect } from 'react';
+import { useLoader, useFrame } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useCannon } from '../../hooks/useCannon';
 import * as CANNON from 'cannon';
 import { getDieValue } from './traverseDie';
-import { CannonContext } from '../CannonContext';
 
 const pi = Math.PI
 const _scale = 0.85/2 // makes the die 1 unit cube
 
+
 type dieProps = {
-  id: number
+  id: number,
+  isFrozen: boolean,
+  onFreeze: Function,
   onValueSet: Function
 }
 
-const InternalDie3DComponent = ({id, onValueSet}: dieProps) => {
+const InternalDie3DComponent = ({id, onValueSet, isFrozen, onFreeze}: dieProps) => {
   const dieGltf = useLoader(GLTFLoader, 'assets/die.glb');
   const [dieGeom, setDieGeom] = useState<THREE.Group>();
-  const {camera, raycaster} = useThree()
-  const [isDragging, setIsDragging] = useState(false)
+  const [material, setMaterial] = useState<THREE.MeshStandardMaterial>();
+  const [value, setValue] = useState(0);
+  // const {gl ,camera, raycaster} = useThree()
+  // const [isDragging, setIsDragging] = useState(false)
 
   if (!dieGeom) {
     setDieGeom(dieGltf.scene.clone(true));
   }
+  useEffect(() => {
+    dieGeom?.traverse((obj) => {
+      if (obj instanceof THREE.Mesh) {
+        obj.material = (obj.material as THREE.MeshStandardMaterial).clone();
+        setMaterial(obj.material as THREE.MeshStandardMaterial);
+      }
+    });
+  }, [dieGeom]);
 
-  const [value, setValue] = useState(0);
   const {ref, body} = useCannon(
     {
       id,
-      mass: 500,
+      mass: 50,
       position: new CANNON.Vec3(
-        (id % 3) * _scale * 3 - 3,
-        (id >= 3 ? _scale * 4 : _scale) + 3,
-        1 * _scale
+        ((id % 3) - 1) * _scale * 3,
+        (id >= 3 ? _scale * 4 : _scale) - 2 * _scale,
+        2 * _scale
       ),
       velocity: new CANNON.Vec3(
-        (Math.random() - 0.5) * 3,
-        (Math.random() - 0.5) * 3,
+        (Math.random() - 0.5) * 2,
+        Math.random() * (id >= 3 ? 2 : -2),
         8
       ),
       angularVelocity: new CANNON.Vec3(
-        6 * pi * Math.random(),
-        6 * pi * Math.random(),
-        6 * pi * Math.random()
+        4 * pi * Math.random(),
+        4 * pi * Math.random(),
+        4 * pi * Math.random()
       ),
     },
     (body: CANNON.Body) => {
       body.addShape(new CANNON.Box(new CANNON.Vec3(_scale, _scale, _scale)));
     }
   );
-
-  const getValue = (): number => {
-    if (ref && ref.current) {
-      const _x = parseFloat((ref.current.rotation.x / pi).toFixed(2));
-      const _y = parseFloat((ref.current.rotation.y / pi).toFixed(2));
-      const _z = parseFloat((ref.current.rotation.z / pi).toFixed(2));
-      const val = getDieValue([_x, _y, _z]);
-      console.log(`Die ${id} rolled ${val}`);
-      return val;
-    } else return 0;
-  };
 
   // When the die has settled, set the value
   useFrame(() => {
@@ -83,32 +83,68 @@ const InternalDie3DComponent = ({id, onValueSet}: dieProps) => {
     }
   });
 
-  const handleDrag = (e: THREE.Event) => {
-    if (isDragging) {
-      if (ref && ref.current) {
-        const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
-        const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
-        const vector = new THREE.Vector3(mouseX, mouseY, 1);
-        console.log(vector.unproject(camera))
-        raycaster.set( camera.position, vector.sub( camera.position ).normalize())
-
-        body.position.copy(new CANNON.Vec3(vector.x, vector.y, vector.z))
+  useEffect(() => {
+    if (material) {
+      if (isFrozen) {
+        material.emissive = new THREE.Color(0x0088ff);
+      } else {
+        material.emissive = new THREE.Color(0x000000);
       }
     }
-  }
+  }, [isFrozen, material]);
+
+  const getValue = (): number => {
+    if (ref && ref.current) {
+      const val = getDieValue([
+        parseFloat((ref.current.rotation.x / pi).toFixed(2)),
+        parseFloat((ref.current.rotation.y / pi).toFixed(2)),
+        parseFloat((ref.current.rotation.z / pi).toFixed(2)),
+      ]);
+      console.log(`Die ${id} rolled ${val}`);
+      return val;
+    } else return 0;
+  };
+
+  const handleClick = (e: THREE.Event) => {
+    onFreeze(e)
+  };
+
+  // const handleDrag = (e: THREE.Event) => {
+  // if (isDragging) {
+  //   if (ref && ref.current) {
+  //     const mouseX = (e.clientX / window.innerWidth) * 2 - 1;
+  //     const mouseY = -(e.clientY / window.innerHeight) * 2 + 1;
+  //     // console.log(mouseX, mouseY)
+  //     let vector = new THREE.Vector3(
+  //       mouseX,
+  //       mouseY,
+  //       0.98 // magic number
+  //     );
+  //     vector.unproject(camera)
+  //     body.position.set(
+  //       vector.x,
+  //       vector.y,
+  //       _scale * 2
+  //     )
+  //   }
+  // }
+  // }
 
   return (
     <>
+      {/* <arrowHelper
+        ref={arrowHelperRef}
+      /> */}
       <primitive
         ref={ref}
         castShadow
         object={dieGeom}
         scale={[_scale, _scale, _scale]}
-        onClick={(e: Event) => getValue()}
-        onPointerDown={() => setIsDragging(true)}
-        onPointerUp={() => setIsDragging(false)}
-        onPointerLeave={() => setIsDragging(false)}
-        onPointerMove={(e: THREE.Event) => handleDrag(e)}
+        onClick={(e: Event) => handleClick(e)}
+        // onPointerDown={() => setIsDragging(true)}
+        // onPointerUp={() => setIsDragging(false)}
+        // onPointerLeave={() => setIsDragging(false)}
+        // onPointerMove={(e: THREE.Event) => handleDrag(e)}
       ></primitive>
     </>
   );

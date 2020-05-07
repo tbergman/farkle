@@ -3,12 +3,10 @@ import ReactDOM from 'react-dom';
 import './index.scss';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
-import ThreeCanvas from './three/ThreeCanvas';
 
 ReactDOM.render(
   <React.StrictMode>
-    {/* <App /> */}
-    <ThreeCanvas />
+    <App />
   </React.StrictMode>,
   document.getElementById('root')
 );
