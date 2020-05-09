@@ -19,12 +19,13 @@ export type gameContext = {
   winner: null | number
 };
 
-export type gameEvent = 
+export type gameEvent =
   | {type: 'START'}
   | {type: 'ROLL'}
+  | {type: 'SET_DICE'; values: DiceValueArray}
   | {type: 'FREEZE'; dieId: number}
   | {type: 'END_TURN'}
-  | {type: 'END'}
+  | {type: 'END'};
 
 
 export const createFarkleGame = (countPlayers: number) => {

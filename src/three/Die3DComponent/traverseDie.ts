@@ -1,3 +1,5 @@
+import { DieValue } from "../../game/Die";
+
 const faces = [
   [0, 2, 0],
   [4, 1, 3],
@@ -50,7 +52,7 @@ const movePosition = (position: Array<number>, direction: Direction):Array<numbe
 }
 
 
-export const getDieValue = (_rot: [number, number, number]) => {  
+export const getDieValue = (_rot: [number, number, number]): DieValue => {  
   let moves: Array<Direction> = [];
   let rot = _rot
     .map((r) => {
@@ -100,5 +102,5 @@ export const getDieValue = (_rot: [number, number, number]) => {
   // console.log(moves)
   // console.log(faces[position[0]][position[1]]);
 
-  return faces[position[0]][position[1]]
+  return faces[position[0]][position[1]] as DieValue
 }

@@ -17,39 +17,24 @@ function App() {
     console.log(current)
   }
 
-  useEffect(() => {
-    console.log(current.context);
-  }, [current.context])
+  // useEffect(() => {
+  //   console.log(current.context);
+  // }, [current.context])
 
   return (
     <div className="App">
-      <FarkleThreeCanvas 
-        gameStateValue={current.value}
-        frozenDice={mergeBoolean(current.context.frozen, current.context.frozenThisRoll)}
+      <FarkleThreeCanvas
+        gameState={current}
+        frozenDice={mergeBoolean(
+          current.context.frozen,
+          current.context.frozenThisRoll
+        )}
         sendGameEvent={send}
       />
       {isGameStarted ? (
         <>
-          {/* <TurnStatus
-            playerId={current.context.player}
-            turnScore={current.context.scoreThisRoll}
-            turnState={turnState}
-          /> */}
-          {/* {
-            <DiceArrayComponent
-              dice={current.context.dice}
-              frozen={mergeBoolean(
-                current.context.frozen,
-                current.context.frozenThisRoll
-              )}
-              turnState={turnState}
-              onDieClick={(i: number) => send({type: 'FREEZE', dieId: i})}
-            />
-          } */}
-          {/* <br /> */}
           <button onClick={() => send('ROLL')}>ROLL</button>
           <button onClick={() => send('END_TURN')}>End turn</button>
-          {/* <ScoreTable scores={current.context.scores} /> */}
           <button onClick={() => logState()}>Log</button>
         </>
       ) : (
