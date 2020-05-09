@@ -11,14 +11,15 @@ const round = (num: number, to: number) => Math.round(num * Math.pow(10, to)) / 
  * 
  */
 export const hasSettled = (body: CANNON.Body, scene: THREE.Scene) => {
+  const _precision = 2;
   return (
     isAtRightAngle(body) && 
-    Math.abs(body.velocity.x).toFixed(2) === '0.00' &&
-    Math.abs(body.velocity.y).toFixed(2) === '0.00' &&
-    Math.abs(body.velocity.z).toFixed(2) === '0.00' &&
-    Math.abs(body.angularVelocity.x).toFixed(2) === '0.00' &&
-    Math.abs(body.angularVelocity.y).toFixed(2) === '0.00' &&
-    Math.abs(body.angularVelocity.z).toFixed(2) === '0.00' &&
+    Math.abs(round(body.velocity.x, _precision)) === 0.00 &&
+    Math.abs(round(body.velocity.y, _precision)) === 0.00 &&
+    Math.abs(round(body.velocity.z, _precision)) === 0.00 &&
+    Math.abs(round(body.angularVelocity.x, _precision)) === 0.00 &&
+    Math.abs(round(body.angularVelocity.y, _precision)) === 0.00 &&
+    Math.abs(round(body.angularVelocity.z, _precision)) === 0.00 &&
     !isNaN(body.inertia.x) &&
     !isNaN(body.inertia.y) &&
     !isNaN(body.inertia.z)
@@ -30,12 +31,13 @@ export const hasSettled = (body: CANNON.Body, scene: THREE.Scene) => {
  * Determines wheter one of the Euler angles of the body is right pi or pi/2
  */
 export const isAtRightAngle = (body: CANNON.Body) => {
-  const rightAngles = [0, round(Math.PI / 2, 2), round(Math.PI, 2)]
+  const _precision = 4
+  const rightAngles = [0, round(Math.PI / 2, _precision), round(Math.PI, _precision)]
   const eulerVec = new CANNON.Vec3(0,0,0)
   body.quaternion.toEuler(eulerVec)
-  const x = Math.abs(round(eulerVec.x, 2))
-  const y = Math.abs(round(eulerVec.y, 2))
-  const z = Math.abs(round(eulerVec.z, 2))
+  const x = Math.abs(round(eulerVec.x, _precision))
+  const y = Math.abs(round(eulerVec.y, _precision))
+  const z = Math.abs(round(eulerVec.z, _precision))
   
   return rightAngles.includes(x) || rightAngles.includes(y) || rightAngles.includes(z)
 }

@@ -46,7 +46,6 @@ const FarkleThreeCanvas = ({
   const setValueForDie = (id: number, newVal: DieValue) => {
     const _vals = [...(dieValues as Array<DieValue>)];
     _vals[id] = newVal;
-    console.log(`Setting value of ${id} to ${newVal}`);
     setDieValues(_vals);
   };
 

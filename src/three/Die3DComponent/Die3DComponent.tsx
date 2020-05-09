@@ -7,7 +7,7 @@ import { useCannon } from '../../hooks/useCannon';
 import * as CANNON from 'cannon';
 import { getDieValue } from './traverseDie';
 import { State, StateValue } from 'xstate';
-import { hasSettled, isAtRightAngle } from './hasSettled';
+import { hasSettled } from './hasSettled';
 import { DieValue } from '../../game/Die';
 import { throwConditions, initialConditions } from './initialConditions';
 import Line from '../Line';
@@ -107,7 +107,6 @@ const InternalDie3DComponent = ({
         parseFloat((ref.current.rotation.y / pi).toFixed(2)),
         parseFloat((ref.current.rotation.z / pi).toFixed(2)),
       ]);
-      console.log(`Die ${id} rolled ${val}`);
       return val;
     } else return 0;
   };
