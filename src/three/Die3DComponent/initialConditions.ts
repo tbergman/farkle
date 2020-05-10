@@ -1,37 +1,39 @@
 import * as CANNON from 'cannon';
 
 const _scale = 0.85/2 // makes the die 1 unit cube
+const pi = Math.PI;
 
 export const initialConditions = (id:number) => {
-
   const _spread = 5
   const _offset = {x: -7, y: -7};
 
   const position = new CANNON.Vec3(
     ((id % 3) - 1) * _scale * _spread + _offset.x,
     (id >= 3 ? _scale * _spread : _scale) - _spread/2 * _scale + _offset.y,
-    4*_scale
+    1*_scale
   );
   const velocity = new CANNON.Vec3(0,0,0)
 
   let angularVelocity = new CANNON.Vec3(0, 0, 0);
 
-  // For testing
+  let quaternion = new CANNON.Quaternion().setFromEuler(0, 0, 0);
+
+  // // For testing
   // if (id === 0) {
-  //   angularVelocity = new CANNON.Vec3(0, 0, 0);
+  //   quaternion = new CANNON.Quaternion().setFromEuler((Math.random()-0.5) * pi, (Math.random()-0.5) * pi, (Math.random()-0.5) * pi);
   // } else if (id === 1) {
-  //   angularVelocity = new CANNON.Vec3(Math.PI, 0, Math.random()*2);
+  //   quaternion = new CANNON.Quaternion().setFromEuler((Math.random()-0.5) * pi, (Math.random()-0.5) * pi, (Math.random()-0.5) * pi);
   // } else if (id === 2) {
-  //   angularVelocity = new CANNON.Vec3(0, -Math.PI, Math.random()*2);
+  //   quaternion = new CANNON.Quaternion().setFromEuler((Math.random()-0.5) * pi, (Math.random()-0.5) * pi, (Math.random()-0.5) * pi);
   // } else if (id === 3) {
-  //   angularVelocity = new CANNON.Vec3(0, Math.PI, Math.random()*2);
+  //   quaternion = new CANNON.Quaternion().setFromEuler((Math.random()-0.5) * pi, (Math.random()-0.5) * pi, (Math.random()-0.5) * pi);
   // } else if (id === 4) {
-  //   angularVelocity = new CANNON.Vec3(-Math.PI, 0, Math.random()*2);
+  //   quaternion = new CANNON.Quaternion().setFromEuler((Math.random()-0.5) * pi, (Math.random()-0.5) * pi, (Math.random()-0.5) * pi);
   // } else if (id === 5) {
-  //   angularVelocity = new CANNON.Vec3(2*Math.PI,0, Math.random()*2);
+  //   quaternion = new CANNON.Quaternion().setFromEuler((Math.random()-0.5) * pi, (Math.random()-0.5) * pi, (Math.random()-0.5) * pi);
   // } 
-  
-  return {position, velocity, angularVelocity};
+
+  return {position, velocity, angularVelocity, quaternion};
 }
 
 export const throwConditions = (id: number) => {

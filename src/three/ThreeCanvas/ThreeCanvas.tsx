@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useReducer } from 'react';
 import * as THREE from 'three';
 import {Canvas, useThree, ReactThreeFiber, useFrame } from 'react-three-fiber';
 import Die3DComponent from '../Die3DComponent';
@@ -21,14 +21,14 @@ type FarkleThreeCanvasProps = {
 }
 
 const _dieIds = [0,1,2,3,4,5]
-
+ 
 const FarkleThreeCanvas = ({
   gameState,
   frozenDice,
   sendGameEvent,
 }: FarkleThreeCanvasProps) => {
   
-  const [dieValues, setDieValues] = useState<DiceValueArray>([0,0,0,0,0,0,]);
+  const [dieValues, setDieValues] = useState<DiceValueArray>([0,0,0,0,0,0]);
   const prevGameState = usePrevious(gameState)
 
   // Send all dice values to Game when they're settled
@@ -84,10 +84,10 @@ const FarkleThreeCanvas = ({
         />
 
         {/* <pointLight position={[10, 10, 10]}/> */}
-        <axesHelper />
+        {/* <axesHelper /> */}
         {/* <arrowHelper ref={arrowHelperRef} /> */}
         {/* <planeHelper plane={new THREE.Plane(new THREE.Vector3(0, 0, 1))} size={10} /> */}
-        <gridHelper />
+        {/* <gridHelper /> */}
 
         <Box position={[0, 0, 0]} scale={[0.1, 0.1, 0.1]} />
         <Box position={[5, 5, 0]} scale={[0.1, 0.1, 0.1]} />

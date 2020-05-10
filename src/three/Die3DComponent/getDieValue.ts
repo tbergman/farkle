@@ -1,4 +1,6 @@
 import { DieValue } from "../../game/Die";
+import { round } from "../../util/round";
+import {rotationToValueMap, mapPrecision, pi} from "./rotationToValueMap";
 
 const faces = [
   [0, 2, 0],
@@ -18,13 +20,13 @@ const movePosition = (position: Array<number>, direction: Direction):Array<numbe
       while (faces[position[0]][position[1]] === 0) { // if the face is empty
         position[1] = position[1] > 0 ? position[1] - 1 : faces[0].length - 1; // move left until we get a face
       }
-      return position;
+     return position;
     case 'down':
       position[0] = position[0] < faces.length - 1 ? position[0] + 1 : 0; // move down
       while (faces[position[0]][position[1]] === 0) { // if the face is empty
         position[1] = position[1] > 0 ? position[1] - 1 : faces[0].length - 1; // move left until we get a face
       }
-      return position;
+   return position;
     case 'left':
       if (position[1] === 0) { // 4
         position = [3, 1] // 6
@@ -51,11 +53,11 @@ const movePosition = (position: Array<number>, direction: Direction):Array<numbe
   return [0,0]
 }
 
-
-export const getDieValue = (_rot: [number, number, number]): DieValue => {  
+const calcDieValue = (_rot: Array<number>): DieValue => {  
   let moves: Array<Direction> = [];
   let rot = _rot
-    .map((r) => {
+    .map((_r) => {
+      const r = round(_r / Math.PI, 2);
       return [0.5, 1].includes(Math.abs(r)) ? r * 2 : 0;
     })
   rot.forEach((r, i) => {
@@ -73,7 +75,6 @@ export const getDieValue = (_rot: [number, number, number]): DieValue => {
   });
   let position = [...startPosition]
   moves.reverse() // make transforms go first
-  // console.log(...moves)
 
   for (let k in moves) {
     let move = moves[k]
@@ -99,8 +100,15 @@ export const getDieValue = (_rot: [number, number, number]): DieValue => {
     }
   }
 
-  // console.log(moves)
-  // console.log(faces[position[0]][position[1]]);
-
   return faces[position[0]][position[1]] as DieValue
 }
+
+const lookupDieValue = (_rot: Array<number>): DieValue => {
+  const rot = _rot.map((r) => {
+    const r_round = round(r, mapPrecision)
+    return [-pi, -pi / 2, 0, pi / 2, pi].includes(r_round) ? r_round : 0;
+  });
+  return rotationToValueMap.get(rot.toString())
+}
+
+export const getDieValue = lookupDieValue

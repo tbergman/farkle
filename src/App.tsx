@@ -17,10 +17,6 @@ function App() {
     console.log(current)
   }
 
-  // useEffect(() => {
-  //   console.log(current.context);
-  // }, [current.context])
-
   return (
     <div className="App">
       <FarkleThreeCanvas

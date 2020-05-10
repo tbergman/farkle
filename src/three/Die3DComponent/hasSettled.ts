@@ -1,6 +1,5 @@
 import * as CANNON from 'cannon';
-
-const round = (num: number, to: number) => Math.round(num * Math.pow(10, to)) / Math.pow(10, to);
+import { round } from '../../util/round';
 
 /**
  * 
@@ -38,7 +37,6 @@ export const isAtRightAngle = (body: CANNON.Body) => {
   const x = Math.abs(round(eulerVec.x, _precision))
   const y = Math.abs(round(eulerVec.y, _precision))
   const z = Math.abs(round(eulerVec.z, _precision))
-  
   return rightAngles.includes(x) || rightAngles.includes(y) || rightAngles.includes(z)
 }
 

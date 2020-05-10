@@ -5,17 +5,18 @@ import { useLoader, useFrame } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useCannon } from '../../hooks/useCannon';
 import * as CANNON from 'cannon';
-import { getDieValue } from './traverseDie';
+import { getDieValue } from './getDieValue';
 import { State, StateValue } from 'xstate';
 import { hasSettled } from './hasSettled';
 import { DieValue } from '../../game/Die';
 import { throwConditions, initialConditions } from './initialConditions';
 import Line from '../Line';
 import Box from '../Box';
+import { round } from '../../util/round';
 
 const pi = Math.PI
 const _scale = 0.85/2 // makes the die 1 unit cube
-const mass = 10
+const mass = 50
 
 type dieProps = {
   id: number,
@@ -55,6 +56,7 @@ const InternalDie3DComponent = ({
       position: initialConditions(id).position,
       velocity: initialConditions(id).velocity,
       angularVelocity: initialConditions(id).angularVelocity,
+      quaternion: initialConditions(id).quaternion
     },
     (body: CANNON.Body) => {
       body.addShape(new CANNON.Box(new CANNON.Vec3(_scale, _scale, _scale)));
@@ -102,16 +104,15 @@ const InternalDie3DComponent = ({
 
   const getValue = (): DieValue => {
     if (ref && ref.current) {
-      const val = getDieValue([
-        parseFloat((ref.current.rotation.x / pi).toFixed(2)),
-        parseFloat((ref.current.rotation.y / pi).toFixed(2)),
-        parseFloat((ref.current.rotation.z / pi).toFixed(2)),
-      ]);
+      const val = getDieValue([ref.current.rotation.x, ref.current.rotation.y, ref.current.rotation.z]);
       return val;
     } else return 0;
   };
 
-  const handleClick = (e: THREE.Event) => {onFreeze(e)};
+  const handleClick = (e: THREE.Event) => {
+    console.log(ref.current?.rotation, getValue())
+    onFreeze(e)
+  };
 
   return (
     <>

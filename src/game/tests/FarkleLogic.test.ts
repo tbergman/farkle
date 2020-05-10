@@ -1,5 +1,4 @@
 import { FarkleLogic } from "../FarkleLogic"
-import { DiceValueArray } from "../Die";
 
 test('Computes Straits', () => {
   expect(FarkleLogic.isStraight([1,2,3,4,5,6])).toBeTruthy()

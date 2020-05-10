@@ -129,8 +129,9 @@ export const turnGuards: turnGuard = {
     );
     if (!validExists) {
       console.log(`You FARKLED!!!`, getUnfrozen(c.dice, c.frozen));
+      console.warn('Auto-Farkle is disabled')
     } 
-    return !validExists
+    return false //!validExists
   },
 
   isValidFreezeState: (c, e)  => {
