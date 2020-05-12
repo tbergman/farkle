@@ -5,6 +5,7 @@ import {
   turnActions,
 } from './Turn';
 import { DiceValueArray } from './Die';
+import { FarkleLogic } from './FarkleLogic';
 
 export type gameContext = {
   countPlayers: number;
@@ -101,7 +102,7 @@ export const createFarkleGame = (countPlayers: number) => {
           },
         }),
         setIsFinalRound: assign({
-          _firstTo10k: (c,e) => c.scores.findIndex(s => s >= 1000)
+          _firstTo10k: (c,e) => c.scores.findIndex(s => s >= FarkleLogic.END_GAME_POINTS)
         }),
         setWinner: assign({
           winner: (c,e) => {

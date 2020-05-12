@@ -6,7 +6,7 @@ import { mergeBoolean } from './game/Turn';
 import ScoreTable from './components/ScoreTable';
 import TurnStatus from './components/TurnStatus';
 import FarkleThreeCanvas from './three/ThreeCanvas';
-import GameButtons from './components/GameButtons';
+import GameButtons from './components/GameControls';
 import GameIntro from './components/GameIntro';
 
 function App() {

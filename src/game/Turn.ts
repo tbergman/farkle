@@ -96,7 +96,7 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
   farkle: {
     entry: 'resetScore',
     after: {
-      1000: 'end',
+      2000: 'end',
     },
   },
   end: {
@@ -162,8 +162,8 @@ export const turnGuards: turnGuard = {
     if (!validMove) {console.log(dice)}
     return (
       validMove &&
-      (c.scores[c.player] > 1000 || 
-        (c.turnScore + c.scoreThisRoll) >= 1000
+      (c.scores[c.player] > FarkleLogic.REQUIRED_POINTS_ON_BOARD || 
+        (c.turnScore + c.scoreThisRoll) >= FarkleLogic.REQUIRED_POINTS_ON_BOARD
       )
     );
   }

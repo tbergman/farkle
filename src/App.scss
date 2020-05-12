@@ -1,13 +1,12 @@
+@import './style/global.scss';
+
 .App {
+  font-family: var(--font-body);
   text-align: center;
 }
 
 .log-button {
-    position: absolute;
-    right: 16px;
-    bottom: 16px;
-  }
-
-table {
-  margin: 16px auto
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
 }

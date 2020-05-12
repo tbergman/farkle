@@ -1,14 +1,14 @@
-  .die {
-    height: 48px;
-    width: 48px;
-    background-color: white;
-    border: none;
-   
-    &.is_frozen {
-      background-color: #ddf;
-    }
+.die {
+  width: 48px;
+  height: 48px;
+  border: none;
+  background-color: white;
 
-    &.is_rolling {
-      filter: blur(8px);
-    }
+  &.is_frozen {
+    background-color: #ddf;
   }
+
+  &.is_rolling {
+    filter: blur(8px);
+  }
+}

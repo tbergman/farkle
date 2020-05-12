@@ -1,14 +1,14 @@
 import React from 'react';
 import { StateValue } from 'xstate';
-import './GameButtons.styles.scss'
-import GameButton from '../GameButton/GameButton';
+import './GameControls.styles.scss'
+import GameButton from '../GameButton';
 
 type GameButtonProps = {
   turnState: StateValue,
   sendGameEvent: Function
 }
 
-const GameButtons = ({turnState, sendGameEvent}: GameButtonProps) => {
+const GameControls = ({turnState, sendGameEvent}: GameButtonProps) => {
 
   return (
     <div className="game-buttons">
@@ -23,4 +23,4 @@ const GameButtons = ({turnState, sendGameEvent}: GameButtonProps) => {
 };
 
 
-export default GameButtons;
+export default GameControls;

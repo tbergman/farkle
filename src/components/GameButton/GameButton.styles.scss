@@ -1,9 +1,10 @@
 .gameButton {
-  height: 48px;
   min-width: 96px;
-  background-color: gold;
+  height: 48px;
   border: 4px ridge gold;
-  font-weight: bold;
-  font-size: 20px;
+  background-color: gold;
   cursor: pointer;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: bold;
 }
