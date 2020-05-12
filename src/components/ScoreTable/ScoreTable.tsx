@@ -4,7 +4,7 @@ type ScoreTableProps = {
   scores: Array<number>
 }
 const ScoreTable = ({scores}: ScoreTableProps) => (
-  <table>
+  <table style={{color: 'white', position: 'absolute', right: '16px', top: '16px'}}> 
     <thead>
       <tr>
         {scores.map((_,id) => (

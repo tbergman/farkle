@@ -2,11 +2,12 @@ import React, { useEffect, useCallback } from 'react';
 import './App.scss';
 import { createFarkleGame } from './game/Farkle';
 import { useMachine } from '@xstate/react';
-import DiceArrayComponent from './components/DiceArray';
 import { mergeBoolean } from './game/Turn';
 import ScoreTable from './components/ScoreTable';
 import TurnStatus from './components/TurnStatus';
 import FarkleThreeCanvas from './three/ThreeCanvas';
+import GameButtons from './components/GameButtons';
+import GameIntro from './components/GameIntro';
 
 function App() {
   const [current, send] = useMachine(createFarkleGame(2));
@@ -31,12 +32,17 @@ function App() {
       />
       {isGameStarted ? (
         <>
-          <button onClick={() => send('ROLL')}>ROLL</button>
-          <button onClick={() => send('END_TURN')}>End turn</button>
-          <button onClick={() => logState()}>Log</button>
+          <TurnStatus 
+            turnState={turnState} 
+            playerId={current.context.player} 
+            turnScore={current.context.turnScore}
+          />
+          <GameButtons turnState={turnState} sendGameEvent={send} />
+          <ScoreTable scores={current.context.scores}/>
+          <button className="log-button" onClick={() => logState()}>Log</button>
         </>
       ) : (
-        <button onClick={() => send('START')}>Start game!</button>
+        <GameIntro startGame={() => send('START')} />
       )}
     </div>
   );

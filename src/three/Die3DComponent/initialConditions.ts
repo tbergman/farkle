@@ -2,11 +2,18 @@ import * as CANNON from 'cannon';
 
 const _scale = 0.85/2 // makes the die 1 unit cube
 const pi = Math.PI;
+const _spread = 7;
+const _offset = {
+  x: 7,
+  y: -7,
+};
 
 export const initialConditions = (id:number) => {
-  const _spread = 5
-  const _offset = {x: -7, y: -7};
 
+  const _offset = {
+    x: 12,
+    y: -12,
+  };
   const position = new CANNON.Vec3(
     ((id % 3) - 1) * _scale * _spread + _offset.x,
     (id >= 3 ? _scale * _spread : _scale) - _spread/2 * _scale + _offset.y,
@@ -37,11 +44,6 @@ export const initialConditions = (id:number) => {
 }
 
 export const throwConditions = (id: number) => {
-  const _spread = 5;
-  const _offset = {
-    x: -7, 
-    y: -7
-  };
 
   const position = new CANNON.Vec3(
     ((id % 3) - 1) * _scale * _spread + _offset.x,

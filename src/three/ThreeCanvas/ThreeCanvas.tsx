@@ -91,11 +91,11 @@ const FarkleThreeCanvas = ({
         {/* <planeHelper plane={new THREE.Plane(new THREE.Vector3(0, 0, 1))} size={10} /> */}
         {/* <gridHelper /> */}
 
-        <Box position={[0, 0, 0]} scale={[0.1, 0.1, 0.1]} />
+        {/* <Box position={[0, 0, 0]} scale={[0.1, 0.1, 0.1]} />
         <Box position={[5, 5, 0]} scale={[0.1, 0.1, 0.1]} />
         <Box position={[5, -5, 0]} scale={[0.1, 0.1, 0.1]} />
         <Box position={[-5, 5, 0]} scale={[0.1, 0.1, 0.1]} />
-        <Box position={[-5, -5, 0]} scale={[0.1, 0.1, 0.1]} />
+        <Box position={[-5, -5, 0]} scale={[0.1, 0.1, 0.1]} /> */}
 
         <CannonContextProvider>
           <Plane position={[0, 0, 0]} />

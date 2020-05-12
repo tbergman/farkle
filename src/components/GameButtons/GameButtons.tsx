@@ -1,23 +1,26 @@
 import React from 'react';
+import { StateValue } from 'xstate';
+import './GameButtons.styles.scss'
+import GameButton from '../GameButton/GameButton';
 
-const GameButtons = ({turnState, roll, end}: GameButtonProps) => {
+type GameButtonProps = {
+  turnState: StateValue,
+  sendGameEvent: Function
+}
+
+const GameButtons = ({turnState, sendGameEvent}: GameButtonProps) => {
 
   return (
-    <>
-      {(turnState === 'ready' || turnState === 'start') && (
-        <button onClick={() => roll()}>Roll</button>
+    <div className="game-buttons">
+      {(turnState === 'ready' || turnState === 'observing' || turnState === 'start') && (
+        <GameButton onClick={() => sendGameEvent('ROLL')}>Roll</GameButton>
       )}
-      {(turnState === 'ready' || turnState === 'observing' || turnState === 'farkle') && (
-        <button onClick={() => end()}>End Turn</button>
+      {(turnState === 'ready' || turnState === 'observing' ) && (
+        <GameButton onClick={() => sendGameEvent('END_TURN')}>End Turn</GameButton>
       )}
-    </>
+    </div>
   );
 };
 
-type GameButtonProps = {
-  turnState: string | undefined,
-  roll: Function,
-  end: Function
-}
 
 export default GameButtons;
