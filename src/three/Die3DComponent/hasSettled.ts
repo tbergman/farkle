@@ -9,7 +9,7 @@ import { round } from '../../util/round';
  * and the body has been initialized (non-NaN inertia value)
  * 
  */
-export const hasSettled = (body: CANNON.Body, scene: THREE.Scene) => {
+export const hasSettled = (body: CANNON.Body) => {
   const _precision = 2;
   return (
     isAtRightAngle(body) && 

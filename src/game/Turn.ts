@@ -129,9 +129,8 @@ export const turnGuards: turnGuard = {
     );
     if (!validExists) {
       console.log(`You FARKLED!!!`, getUnfrozen(c.dice, c.frozen));
-      console.warn('Auto-Farkle is disabled')
     } 
-    return false //!validExists
+    return !validExists
   },
 
   isValidFreezeState: (c, e)  => {
@@ -158,7 +157,7 @@ export const turnGuards: turnGuard = {
     const dice = getFrozen(c.dice, mergeBoolean(c.frozen, c.frozenThisRoll));
     const validMove = FarkleLogic.isValidMove(dice)
     console.log(
-      `Trying to end turn. Is this a valid move? ${validMove}. Turn score: ${c.turnScore}`
+      `Trying to end turn. Is this a valid move? ${validMove}. Total score: ${c.turnScore + c.scoreThisRoll}`
     );
     if (!validMove) {console.log(dice)}
     return (

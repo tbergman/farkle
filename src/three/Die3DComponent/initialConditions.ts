@@ -33,12 +33,15 @@ export const initialConditions = (id:number) => {
   //   quaternion = new CANNON.Quaternion().setFromEuler((Math.random()-0.5) * pi, (Math.random()-0.5) * pi, (Math.random()-0.5) * pi);
   // } 
 
-  return {position, velocity, angularVelocity, quaternion};
+  return {position, quaternion, velocity, angularVelocity};
 }
 
 export const throwConditions = (id: number) => {
   const _spread = 5;
-  const _offset = {x: -7, y: -7};
+  const _offset = {
+    x: -7, 
+    y: -7
+  };
 
   const position = new CANNON.Vec3(
     ((id % 3) - 1) * _scale * _spread + _offset.x,
@@ -58,6 +61,13 @@ export const throwConditions = (id: number) => {
     4 * Math.PI * Math.random()
   );
 
-  return {position, velocity, angularVelocity};
+  let quaternion = new CANNON.Quaternion().setFromEuler(
+    4 * Math.PI * Math.random(),
+    4 * Math.PI * Math.random(),
+    4 * Math.PI * Math.random()
+  );
+
+
+  return {position, quaternion, velocity, angularVelocity};
 
 };

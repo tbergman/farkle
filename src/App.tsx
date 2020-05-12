@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useCallback } from 'react';
 import './App.scss';
 import { createFarkleGame } from './game/Farkle';
 import { useMachine } from '@xstate/react';
@@ -17,6 +17,8 @@ function App() {
     console.log(current)
   }
 
+  const sendGameEvent = useCallback(send, [])
+
   return (
     <div className="App">
       <FarkleThreeCanvas
@@ -25,7 +27,7 @@ function App() {
           current.context.frozen,
           current.context.frozenThisRoll
         )}
-        sendGameEvent={send}
+        sendGameEvent={sendGameEvent}
       />
       {isGameStarted ? (
         <>

@@ -1,45 +1,52 @@
 
 import * as THREE from 'three';
-import React, { useState, Suspense, useRef, useEffect } from 'react';
+import React, { useState, Suspense, useEffect, useRef } from 'react';
 import { useLoader, useFrame } from 'react-three-fiber';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
 import { useCannon } from '../../hooks/useCannon';
 import * as CANNON from 'cannon';
 import { getDieValue } from './getDieValue';
-import { State, StateValue } from 'xstate';
+import { StateValue } from 'xstate';
 import { hasSettled } from './hasSettled';
 import { DieValue } from '../../game/Die';
 import { throwConditions, initialConditions } from './initialConditions';
-import Line from '../Line';
-import Box from '../Box';
-import { round } from '../../util/round';
+import { usePrevious } from '../../hooks/usePrevious';
+import { useRenderCount } from '../../hooks/useRenderCount';
+import { useTraceUpdate } from '../../hooks/useTraceUpdate';
 
-const pi = Math.PI
 const _scale = 0.85/2 // makes the die 1 unit cube
-const mass = 50
+const mass = 42
 
 type dieProps = {
   id: number,
+  value: number,
   isFrozen: boolean,
   turnState: StateValue,
   onFreeze: Function,
-  onValueSet: Function
+  setValue: Function
 }
 
 const InternalDie3DComponent = ({
   id, 
   isFrozen,
+  value,
   turnState, 
+  setValue, 
   onFreeze,
-  onValueSet, 
 }: dieProps) => {
   const dieGltf = useLoader(GLTFLoader, 'assets/die.glb');
   const [dieGeom, setDieGeom] = useState<THREE.Group>();
   const [material, setMaterial] = useState<THREE.MeshStandardMaterial>();
-  const [value, setValue] = useState<DieValue | null>(null);
+  // const [value, setValue] = useState<DieValue>(0);
+  const prevTurnState = usePrevious(turnState);
+
+  const isNewRoll = useRef(false)
+
+  // useTraceUpdate({id, isFrozen, turnState, onFreeze, onValueSet});
+  // useRenderCount(`die ${id}`)
 
   if (!dieGeom) { setDieGeom(dieGltf.scene.clone(true));}
-
+  
   useEffect(() => {
     dieGeom?.traverse((obj) => {
       if (obj instanceof THREE.Mesh) {
@@ -54,38 +61,45 @@ const InternalDie3DComponent = ({
       id,
       mass,
       position: initialConditions(id).position,
+      quaternion: initialConditions(id).quaternion,
       velocity: initialConditions(id).velocity,
       angularVelocity: initialConditions(id).angularVelocity,
-      quaternion: initialConditions(id).quaternion
     },
     (body: CANNON.Body) => {
       body.addShape(new CANNON.Box(new CANNON.Vec3(_scale, _scale, _scale)));
     }
   );
+  const bodyRef = useRef(body)
 
-  // Watch TurnState
+  // When turnState changes, roll again
   useEffect(() => {
-    if (turnState === 'rolling' && !isFrozen) {
+    if (prevTurnState !== 'rolling' && turnState === 'rolling' && !isFrozen) {
+      console.log('Rolling');
       // roll dice
-      setValue(null)
-      onValueSet(0);
-      body.position = throwConditions(id).position;
-      body.velocity = throwConditions(id).velocity;
-      body.angularVelocity = throwConditions(id).angularVelocity;
+      isNewRoll.current = true;
+      bodyRef.current.position = throwConditions(id).position;
+      bodyRef.current.quaternion = throwConditions(id).quaternion;
+      bodyRef.current.velocity = throwConditions(id).velocity;
+      bodyRef.current.angularVelocity = throwConditions(id).angularVelocity;
     } else if (turnState === 'start') {
-      body.position = initialConditions(id).position;
+      bodyRef.current.position = initialConditions(id).position;
     }
-  }, [turnState, isFrozen])
+  }, [turnState, prevTurnState, isFrozen, id, setValue]);
 
-  // When the die has settled, set the value
+
+  // When the die has settled, 
+  // set the value
   useFrame(() => {
-    if ( ref.current && hasSettled(body, ref.current)) {
-      if (turnState === 'rolling' && value === null) {
-        const val = getValue();
-        console.log(`Die ${id} settled on ${val}`)
-        setValue(val);
-        onValueSet(val);
-      } 
+    if (
+      !!ref.current && 
+      isNewRoll.current &&
+      turnState === 'rolling' &&
+      hasSettled(bodyRef.current)
+    ) {
+      isNewRoll.current = false;
+      const val = getValue();
+      // console.log(`Die ${id} settled on ${val}`);
+      setValue(val);
     }
   });
 
@@ -94,13 +108,13 @@ const InternalDie3DComponent = ({
     if (material) {
       if (isFrozen) {
         material.emissive = new THREE.Color(0x0088ff);
-        body.mass = 100 * mass
+        bodyRef.current.mass = 100 * mass
       } else {
         material.emissive = new THREE.Color(0x000000);
-        body.mass = mass
+        bodyRef.current.mass = mass
       }
     }
-  }, [body.mass, isFrozen, material]);
+  }, [bodyRef.current.mass, isFrozen, material]);
 
   const getValue = (): DieValue => {
     if (ref && ref.current) {
@@ -110,7 +124,7 @@ const InternalDie3DComponent = ({
   };
 
   const handleClick = (e: THREE.Event) => {
-    console.log(ref.current?.rotation, getValue())
+    // console.log(value, getValue(), value === getValue())
     onFreeze(e)
   };
 
@@ -136,4 +150,4 @@ const Die3DComponent = (props: dieProps ) => {
   )
 }
 
-export default Die3DComponent;
+export default Die3DComponent
