@@ -1,17 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState, useRef, useReducer, useCallback } from 'react';
+import React, { useEffect, useState } from 'react';
 import * as THREE from 'three';
-import {Canvas, useThree, ReactThreeFiber, useFrame } from 'react-three-fiber';
+import {Canvas } from 'react-three-fiber';
 import Die3DComponent from '../Die3DComponent';
 import Plane from '../Plane';
 import { CannonContextProvider } from '../CannonContext';
 import { DiceValueArray, DieValue } from '../../game/Die';
-import { State, Event, StateValue } from 'xstate';
+import { State } from 'xstate';
 import { gameContext, gameEvent } from '../../game/Farkle';
 import { usePrevious } from '../../hooks/usePrevious';
 import OrbitControlsComponent from './OrbitControls';
 import StatsComponent from './StatsComponent';
-import './ThreeCanvas.styles.scss';
 
 type FarkleThreeCanvasProps = {
   gameState: State<gameContext, gameEvent, any, any>,
@@ -59,7 +58,13 @@ const FarkleThreeCanvas = ({
   return (
     <>
       <Canvas
-        className="three-canvas"
+        style={{
+          width: '100vw',
+          height: '100vh',
+          position: 'absolute',
+          top: 0,
+          zIndex: -1,
+        }}
         camera={{ position: [0, -4, 12] }}
         onCreated={({gl}) => (
           (gl.shadowMap.enabled = true) as any,

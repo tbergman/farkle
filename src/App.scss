@@ -1,5 +1,9 @@
 @import './style/global.scss';
 
+body {
+  margin: 0;
+}
+
 .App {
   font-family: var(--font-body);
   text-align: center;

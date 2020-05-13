@@ -1,9 +1,54 @@
+$vertical-margin: 32px;
+$padding: calc(min(8vw, 48px));
+
 .game-intro {
   width: 80%;
   max-width: 720px;
+  height: auto;
+  max-height: calc(100vh - 2 * #{$vertical-margin});
   box-sizing: border-box;
-  padding: 48px;
-  margin: 48px auto;
-  background-color: white;
+  padding-bottom: $padding;
+  border: 8px ridge var(--color-primary-light);
+  margin: $vertical-margin auto;
+  background-color: var(--color-primary-light);
   border-radius: 8px;
+  overflow-y: scroll;
+
+  & > * {
+    padding: 0 $padding;
+  }
+
+  .intro-header {
+    position: sticky;
+    top: 0;
+    padding-top: $padding;
+    background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-primary-light) 90%, transparent 100%);
+  }
+
+  .title {
+    position: sticky;
+    top: 0;
+    margin: 0 auto 0.5em;
+    font-family: var(--font-header);
+    font-size: calc(min(12vw, 64px));
+    text-align: center;
+  }
+
+  .gameButton {
+    position: sticky;
+    top: 48px;
+  }
+
+  .toggle-instructions-button {
+    padding: 1em 0;
+    border: none;
+    background-color: transparent;
+    font-size: 12px;
+    outline-color: var(--color-primary);
+    text-decoration: underline;
+  }
+
+  .instructions {
+    // padding-bottom: $padding;
+  }
 }
