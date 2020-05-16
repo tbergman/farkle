@@ -5,7 +5,7 @@ import { DIE_SIZE, THROW_SPEED, THROW_POSITION } from '../constants';
 const _scale = DIE_SIZE
 
 
-const formation = (id:number) => {
+export const formation = (id:number) => {
   const _spread = 6; // mm
   return {
     x: ((id % 3) - 1) * _scale * _spread,
@@ -15,11 +15,6 @@ const formation = (id:number) => {
 }
 
 export const initialConditions = (id:number) => {
-
-  const THROW_POSITION = {
-    x: 0, // mm
-    y: -0, // mm
-  };
 
   const position = new CANNON.Vec3(
     formation(id).x + THROW_POSITION.x,
@@ -60,16 +55,14 @@ export const throwConditions = (id: number) => {
 
   const velocity = new CANNON.Vec3(
     -THROW_SPEED,
-    THROW_SPEED
-    // (Math.random() - 0.5) * 2 - THROW_POSITION.x * 4,
-    // Math.random() * (id >= 3 ? 2 : -2) - THROW_POSITION.y * 4,
-    -10
+    THROW_SPEED,
+    -0
   )
 
   const angularVelocity = new CANNON.Vec3(
-    16 * Math.PI * Math.random(),
-    16 * Math.PI * Math.random(),
-    16 * Math.PI * Math.random()
+    6 * Math.PI * Math.random(),
+    6 * Math.PI * Math.random(),
+    6 * Math.PI * Math.random()
   );
 
   let quaternion = new CANNON.Quaternion().setFromEuler(

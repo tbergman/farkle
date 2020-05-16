@@ -1,5 +1,6 @@
 import * as CANNON from 'cannon';
 import { round } from '../../util/round';
+import { DIE_SIZE } from '../constants';
 
 /**
  * 
@@ -47,14 +48,15 @@ export const forceSettle = (body: CANNON.Body):CANNON.Body => {
   let currentEuler = new CANNON.Vec3(0, 0, 0)
   body.quaternion.toEuler(currentEuler) 
 
+  // round angle to the nearest pi
   const newEuler:[number, number, number, string] = [
     ([-2, -1, 0, 1, 2].find(x => x === round(currentEuler.x / (Math.PI / 2), 1)) || currentEuler.x/(Math.PI/2)) * Math.PI/2,
     ([-2, -1, 0, 1, 2].find(y => y === round(currentEuler.y / (Math.PI / 2), 1)) || currentEuler.y/(Math.PI/2)) * Math.PI/2,
     ([-2, -1, 0, 1, 2].find(z => z === round(currentEuler.z / (Math.PI / 2), 1)) || currentEuler.z/(Math.PI/2)) * Math.PI/2,
     'YZX'
   ]
-  // round angle to the nearest pi
   body.quaternion.setFromEuler(...newEuler)
+  // body.position.z = DIE_SIZE * 2
 
   return body
 }

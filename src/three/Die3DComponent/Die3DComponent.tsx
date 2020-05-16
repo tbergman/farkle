@@ -9,15 +9,15 @@ import { getDieValue } from './getDieValue';
 import { StateValue } from 'xstate';
 import { hasSettled, forceSettle } from './hasSettled';
 import { DieValue } from '../../game/Die';
-import { throwConditions, initialConditions } from './initialConditions';
+import { throwConditions, initialConditions, formation } from './initialConditions';
 import { usePrevious } from '../../hooks/usePrevious';
 import { DIE_MASS, DIE_SIZE, FPS } from '../constants';
+import { dieMaterial, frozenMaterial } from '../materials';
 
-const max_seconds_to_settle = 1;
+const max_seconds_to_settle = 1.5;
 
 type dieProps = {
   id: number,
-  value: number,
   isFrozen: boolean,
   turnState: StateValue,
   onFreeze: Function,
@@ -27,7 +27,6 @@ type dieProps = {
 const InternalDie3DComponent = ({
   id, 
   isFrozen,
-  value,
   turnState, 
   setValue, 
   onFreeze,
@@ -58,6 +57,7 @@ const InternalDie3DComponent = ({
     {
       id,
       mass: DIE_MASS,
+      material: dieMaterial,
       position: initialConditions(id).position,
       quaternion: initialConditions(id).quaternion,
       velocity: initialConditions(id).velocity,
@@ -73,8 +73,8 @@ const InternalDie3DComponent = ({
   useEffect(() => {
     if (prevTurnState !== 'rolling' && turnState === 'rolling' && !isFrozen) {
       console.log('Rolling');
-      // roll dice
       isNewRoll.current = true;
+      if (material) material.visible = true
       bodyRef.current.position = throwConditions(id).position;
       bodyRef.current.quaternion = throwConditions(id).quaternion;
       bodyRef.current.velocity = throwConditions(id).velocity;
@@ -82,8 +82,9 @@ const InternalDie3DComponent = ({
       setFramesSinceRoll(0)
     } else if (turnState === 'start') {
       bodyRef.current.position = initialConditions(id).position;
+      if (material) material.visible = false
     }
-  }, [turnState, prevTurnState, isFrozen, id, setValue]);
+  }, [turnState, prevTurnState, isFrozen, id, setValue, material]);
 
 
   // When the die has settled, 
@@ -116,15 +117,19 @@ const InternalDie3DComponent = ({
     if (material) {
       if (isFrozen) {
         material.emissive = new THREE.Color(0x0088ff);
-        // bodyRef.current.mass = 100 * DIE_MASS
-        debugger
-
+        bodyRef.current.material = frozenMaterial
+        bodyRef.current.position = new CANNON.Vec3(
+          formation(id).x - 0.075,
+          formation(id).y - 0.075,
+          formation(id).z
+        )
       } else {
         material.emissive = new THREE.Color(0x000000);
+        bodyRef.current.material = dieMaterial
         // bodyRef.current.mass = DIE_MASS
       }
     }
-  }, [bodyRef.current.mass, isFrozen, material]);
+  }, [bodyRef.current.mass, id, isFrozen, material]);
 
   const getValue = (): DieValue => {
     if (ref && ref.current) {
@@ -140,14 +145,15 @@ const InternalDie3DComponent = ({
 
   return (
     <>
-      {/* <Box position={quaternion} scale={[0.1, 0.1, 0.1]} /> */}
-      <primitive
-        ref={ref}
-        castShadow
-        object={dieGeom}
-        scale={[DIE_SIZE, DIE_SIZE, DIE_SIZE]}
-        onClick={(e: Event) => handleClick(e)}
-      ></primitive>
+      {
+        <primitive
+          ref={ref}
+          castShadow
+          object={dieGeom}
+          scale={[DIE_SIZE, DIE_SIZE, DIE_SIZE]}
+          onClick={(e: Event) => handleClick(e)}
+        ></primitive>
+      }
     </>
   );
 };

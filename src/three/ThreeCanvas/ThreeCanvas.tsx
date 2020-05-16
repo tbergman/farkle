@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from 'react';
 import * as THREE from 'three';
-import {Canvas } from 'react-three-fiber';
+import { Canvas } from 'react-three-fiber';
 import Die3DComponent from '../Die3DComponent';
 import Plane from '../Plane';
 import { CannonContextProvider } from '../CannonContext';
@@ -27,7 +27,6 @@ const FarkleThreeCanvas = ({
   frozenDice,
   sendGameEvent,
 }: FarkleThreeCanvasProps) => {
-  // useTraceUpdate({gameState, frozenDice, sendGameEvent});
   
   const [dieValues, setDieValues] = useState<DiceValueArray>(_initDice);
   const prevTurnValue = usePrevious(Object.values(gameState.value)[0]);
@@ -96,7 +95,7 @@ const FarkleThreeCanvas = ({
         <Box position={[-5, -5, 0]} scale={[0.1, 0.1, 0.1]} /> */}
 
         <CannonContextProvider>
-          <Plane position={[0, 0, 0]} size={GROUND_SIZE}/>
+          <Plane position={[0, 0, -0]} size={GROUND_SIZE}/>
           {
             gameState.value !== 'idle' &&
             gameState.value !== 'end' &&
@@ -104,7 +103,7 @@ const FarkleThreeCanvas = ({
               <Die3DComponent
                 key={id}
                 id={id}
-                value={dieValues[id]}
+                // value={dieValues[id]}
                 turnState={Object.values(gameState.value)[0]}
                 isFrozen={frozenDice[id]}
                 setValue={(v: DieValue) => setValueForDie(id, v)}
