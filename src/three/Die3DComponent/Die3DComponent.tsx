@@ -14,7 +14,7 @@ import { usePrevious } from '../../hooks/usePrevious';
 import { DIE_MASS, DIE_SIZE, FPS } from '../constants';
 import { dieMaterial, frozenMaterial } from '../materials';
 
-const max_seconds_to_settle = 1.5;
+const max_seconds_to_settle = 2;
 
 type dieProps = {
   id: number,
@@ -119,8 +119,8 @@ const InternalDie3DComponent = ({
         material.emissive = new THREE.Color(0x0088ff);
         bodyRef.current.material = frozenMaterial
         bodyRef.current.position = new CANNON.Vec3(
-          formation(id).x - 0.075,
-          formation(id).y - 0.075,
+          formation(id).x - 1,
+          formation(id).y - 1,
           formation(id).z
         )
       } else {

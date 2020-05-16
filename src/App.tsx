@@ -35,7 +35,7 @@ function App() {
           <TurnStatus 
             turnState={turnState} 
             playerId={current.context.player} 
-            turnScore={current.context.turnScore}
+            turnScore={current.context.scoreThisRoll}
           />
           <GameButtons turnState={turnState} sendGameEvent={send} />
           <ScoreTable scores={current.context.scores}/>

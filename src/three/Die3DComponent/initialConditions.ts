@@ -10,7 +10,7 @@ export const formation = (id:number) => {
   return {
     x: ((id % 3) - 1) * _scale * _spread,
     y: (id >= 3 ? _scale * _spread : _scale) - _spread / 2 * _scale,
-    z: (id >= 3 ? _scale * _spread : _scale) - _spread / 2 * _scale,
+    z: _scale
   }
 }
 
