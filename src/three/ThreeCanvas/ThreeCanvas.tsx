@@ -11,6 +11,7 @@ import { gameContext, gameEvent } from '../../game/Farkle';
 import { usePrevious } from '../../hooks/usePrevious';
 import OrbitControlsComponent from './OrbitControls';
 import StatsComponent from './StatsComponent';
+import { CAMERA_POSITION, SPOTLIGHT_POSITION, GROUND_SIZE } from '../constants';
 
 type FarkleThreeCanvasProps = {
   gameState: State<gameContext, gameEvent, any, any>,
@@ -65,7 +66,7 @@ const FarkleThreeCanvas = ({
           top: 0,
           zIndex: -1,
         }}
-        camera={{ position: [0, -4, 12] }}
+        camera={{ position: CAMERA_POSITION }}
         onCreated={({gl}) => (
           (gl.shadowMap.enabled = true) as any,
           (gl.shadowMap.type = THREE.PCFSoftShadowMap) as any
@@ -76,7 +77,7 @@ const FarkleThreeCanvas = ({
         <ambientLight intensity={0.5} />
         <spotLight
           intensity={0.9}
-          position={[30, 30, 50]}
+          position={SPOTLIGHT_POSITION}
           angle={0.2}
           penumbra={1}
           castShadow
@@ -95,8 +96,9 @@ const FarkleThreeCanvas = ({
         <Box position={[-5, -5, 0]} scale={[0.1, 0.1, 0.1]} /> */}
 
         <CannonContextProvider>
-          <Plane position={[0, 0, 0]} />
-          {gameState.value !== 'idle' &&
+          <Plane position={[0, 0, 0]} size={GROUND_SIZE}/>
+          {
+            gameState.value !== 'idle' &&
             gameState.value !== 'end' &&
             _dieIds.map((id) => (
               <Die3DComponent

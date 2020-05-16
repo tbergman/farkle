@@ -4,10 +4,11 @@ import { useCannon } from '../../hooks/useCannon';
 //import { Test } from './Plane.styles';
 
 type PlaneProps = {
-  position: [number, number, number]
+  position: [number, number, number],
+  size: number
 }
 
-function Plane({position}: PlaneProps) {
+function Plane({position, size}: PlaneProps) {
   // Register plane as a physics body with zero mass
   const {ref} = useCannon({mass: 0}, (body:CANNON.Body) => {
     body.addShape(new CANNON.Plane());
@@ -19,7 +20,7 @@ function Plane({position}: PlaneProps) {
       ref={ref} 
       receiveShadow
     >
-      <planeBufferGeometry attach="geometry" args={[200, 200]} />
+      <planeBufferGeometry attach="geometry" args={[size, size]} />
       <meshPhongMaterial attach="material" color="#002f00" />
     </mesh>
   );

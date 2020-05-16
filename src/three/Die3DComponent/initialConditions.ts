@@ -1,23 +1,30 @@
 import * as CANNON from 'cannon';
+import { DIE_SIZE, THROW_SPEED, THROW_POSITION } from '../constants';
+// units in mm & grams
 
-const _scale = 0.85/2 // makes the die 1 unit cube
-const pi = Math.PI;
-const _spread = 7;
-const _offset = {
-  x: 7,
-  y: -7,
-};
+const _scale = DIE_SIZE
+
+
+const formation = (id:number) => {
+  const _spread = 6; // mm
+  return {
+    x: ((id % 3) - 1) * _scale * _spread,
+    y: (id >= 3 ? _scale * _spread : _scale) - _spread / 2 * _scale,
+    z: (id >= 3 ? _scale * _spread : _scale) - _spread / 2 * _scale,
+  }
+}
 
 export const initialConditions = (id:number) => {
 
-  const _offset = {
-    x: 12,
-    y: -12,
+  const THROW_POSITION = {
+    x: 0, // mm
+    y: -0, // mm
   };
+
   const position = new CANNON.Vec3(
-    ((id % 3) - 1) * _scale * _spread + _offset.x,
-    (id >= 3 ? _scale * _spread : _scale) - _spread/2 * _scale + _offset.y,
-    1*_scale
+    formation(id).x + THROW_POSITION.x,
+    formation(id).y + THROW_POSITION.y,
+    formation(id).z
   );
   const velocity = new CANNON.Vec3(0,0,0)
 
@@ -46,27 +53,29 @@ export const initialConditions = (id:number) => {
 export const throwConditions = (id: number) => {
 
   const position = new CANNON.Vec3(
-    ((id % 3) - 1) * _scale * _spread + _offset.x,
-    (id >= 3 ? _scale * _spread : _scale) - (_spread / 2) * _scale + _offset.y,
-    _spread * _scale,
+    formation(id).x + THROW_POSITION.x,
+    formation(id).y + THROW_POSITION.y,
+    THROW_POSITION.z
   );
 
   const velocity = new CANNON.Vec3(
-    (Math.random() - 0.5) * 2 - _offset.x*1,
-    Math.random() * (id >= 3 ? 2 : -2) - _offset.y*1,
-    -1
+    -THROW_SPEED,
+    THROW_SPEED
+    // (Math.random() - 0.5) * 2 - THROW_POSITION.x * 4,
+    // Math.random() * (id >= 3 ? 2 : -2) - THROW_POSITION.y * 4,
+    -10
   )
 
   const angularVelocity = new CANNON.Vec3(
-    4 * Math.PI * Math.random(),
-    4 * Math.PI * Math.random(),
-    4 * Math.PI * Math.random()
+    16 * Math.PI * Math.random(),
+    16 * Math.PI * Math.random(),
+    16 * Math.PI * Math.random()
   );
 
   let quaternion = new CANNON.Quaternion().setFromEuler(
-    4 * Math.PI * Math.random(),
-    4 * Math.PI * Math.random(),
-    4 * Math.PI * Math.random()
+    2 * Math.PI * Math.random(),
+    2 * Math.PI * Math.random(),
+    2 * Math.PI * Math.random()
   );
 
 

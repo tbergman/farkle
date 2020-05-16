@@ -2,6 +2,7 @@
 import * as CANNON from 'cannon';
 import React, {useEffect, useState } from 'react';
 import { useFrame} from 'react-three-fiber';
+import { GRAVITY, FPS } from './constants';
 
 type CannonContextProps = {
   children: React.ReactNode
@@ -18,10 +19,10 @@ export const CannonContextProvider = ({children}: CannonContextProps) => {
   useEffect(() => {
     world.broadphase = new CANNON.NaiveBroadphase();
     world.solver.iterations = 10;
-    world.gravity.set(0, 0, -10);
+    world.gravity.set(0, 0, GRAVITY);
   }, [world]);
   // Run world stepper every frame
-  useFrame(() => world.step(1 / 60));
+  useFrame(() => world.step(1 / FPS));
   // Distribute world via context
   return <CannonContext.Provider value={world} children={children} />;
 }

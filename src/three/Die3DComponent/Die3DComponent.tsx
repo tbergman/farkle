@@ -7,15 +7,13 @@ import { useCannon } from '../../hooks/useCannon';
 import * as CANNON from 'cannon';
 import { getDieValue } from './getDieValue';
 import { StateValue } from 'xstate';
-import { hasSettled } from './hasSettled';
+import { hasSettled, forceSettle } from './hasSettled';
 import { DieValue } from '../../game/Die';
 import { throwConditions, initialConditions } from './initialConditions';
 import { usePrevious } from '../../hooks/usePrevious';
-import { useRenderCount } from '../../hooks/useRenderCount';
-import { useTraceUpdate } from '../../hooks/useTraceUpdate';
+import { DIE_MASS, DIE_SIZE, FPS } from '../constants';
 
-const _scale = 0.85/2 // makes the die 1 unit cube
-const mass = 42
+const max_seconds_to_settle = 1;
 
 type dieProps = {
   id: number,
@@ -37,7 +35,7 @@ const InternalDie3DComponent = ({
   const dieGltf = useLoader(GLTFLoader, 'assets/die.glb');
   const [dieGeom, setDieGeom] = useState<THREE.Group>();
   const [material, setMaterial] = useState<THREE.MeshStandardMaterial>();
-  // const [value, setValue] = useState<DieValue>(0);
+  const [framesSinceRoll, setFramesSinceRoll] = useState(0);
   const prevTurnState = usePrevious(turnState);
 
   const isNewRoll = useRef(false)
@@ -59,14 +57,14 @@ const InternalDie3DComponent = ({
   const {ref, body} = useCannon(
     {
       id,
-      mass,
+      mass: DIE_MASS,
       position: initialConditions(id).position,
       quaternion: initialConditions(id).quaternion,
       velocity: initialConditions(id).velocity,
       angularVelocity: initialConditions(id).angularVelocity,
     },
     (body: CANNON.Body) => {
-      body.addShape(new CANNON.Box(new CANNON.Vec3(_scale, _scale, _scale)));
+      body.addShape(new CANNON.Box(new CANNON.Vec3(DIE_SIZE, DIE_SIZE, DIE_SIZE)));
     }
   );
   const bodyRef = useRef(body)
@@ -81,6 +79,7 @@ const InternalDie3DComponent = ({
       bodyRef.current.quaternion = throwConditions(id).quaternion;
       bodyRef.current.velocity = throwConditions(id).velocity;
       bodyRef.current.angularVelocity = throwConditions(id).angularVelocity;
+      setFramesSinceRoll(0)
     } else if (turnState === 'start') {
       bodyRef.current.position = initialConditions(id).position;
     }
@@ -93,13 +92,22 @@ const InternalDie3DComponent = ({
     if (
       !!ref.current && 
       isNewRoll.current &&
-      turnState === 'rolling' &&
-      hasSettled(bodyRef.current)
+      turnState === 'rolling'
     ) {
-      isNewRoll.current = false;
-      const val = getValue();
-      // console.log(`Die ${id} settled on ${val}`);
-      setValue(val);
+      if (hasSettled(bodyRef.current)) {
+        isNewRoll.current = false;
+        const val = getValue();
+        setValue(val);
+      } else {
+        setFramesSinceRoll(framesSinceRoll + 1)
+        if (framesSinceRoll / FPS >= max_seconds_to_settle) {
+          // force the die to settle
+          bodyRef.current = forceSettle(bodyRef.current)
+          isNewRoll.current = false;
+          const val = getValue();
+          setValue(val);
+        }
+      }
     }
   });
 
@@ -108,10 +116,12 @@ const InternalDie3DComponent = ({
     if (material) {
       if (isFrozen) {
         material.emissive = new THREE.Color(0x0088ff);
-        bodyRef.current.mass = 100 * mass
+        // bodyRef.current.mass = 100 * DIE_MASS
+        debugger
+
       } else {
         material.emissive = new THREE.Color(0x000000);
-        bodyRef.current.mass = mass
+        // bodyRef.current.mass = DIE_MASS
       }
     }
   }, [bodyRef.current.mass, isFrozen, material]);
@@ -124,7 +134,7 @@ const InternalDie3DComponent = ({
   };
 
   const handleClick = (e: THREE.Event) => {
-    // console.log(value, getValue(), value === getValue())
+    if (!hasSettled(bodyRef.current)) console.log(bodyRef.current)
     onFreeze(e)
   };
 
@@ -135,7 +145,7 @@ const InternalDie3DComponent = ({
         ref={ref}
         castShadow
         object={dieGeom}
-        scale={[_scale, _scale, _scale]}
+        scale={[DIE_SIZE, DIE_SIZE, DIE_SIZE]}
         onClick={(e: Event) => handleClick(e)}
       ></primitive>
     </>

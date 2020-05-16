@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback } from 'react';
+import React, { useCallback } from 'react';
 import './App.scss';
 import { createFarkleGame } from './game/Farkle';
 import { useMachine } from '@xstate/react';
