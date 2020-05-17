@@ -12,6 +12,7 @@ import { usePrevious } from '../../hooks/usePrevious';
 import OrbitControlsComponent from './OrbitControls';
 import StatsComponent from './StatsComponent';
 import { CAMERA_POSITION, SPOTLIGHT_POSITION, GROUND_SIZE } from '../constants';
+import Camera from './Camera';
 
 type FarkleThreeCanvasProps = {
   gameState: State<gameContext, gameEvent, any, any>,
@@ -65,7 +66,6 @@ const FarkleThreeCanvas = ({
           top: 0,
           zIndex: -1,
         }}
-        camera={{ position: CAMERA_POSITION }}
         onCreated={({gl}) => (
           (gl.shadowMap.enabled = true) as any,
           (gl.shadowMap.type = THREE.PCFSoftShadowMap) as any
@@ -73,6 +73,8 @@ const FarkleThreeCanvas = ({
       >
         <StatsComponent />
         <OrbitControlsComponent />
+        
+        <Camera position={CAMERA_POSITION}/>
         <ambientLight intensity={0.5} />
         <spotLight
           intensity={0.9}
