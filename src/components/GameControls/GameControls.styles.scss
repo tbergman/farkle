@@ -1,6 +1,5 @@
 .game-buttons {
-  .you-farkled {
-    color: white;
-    text-transform: uppercase;
+  & * + * {
+    margin: 8px;
   }
 }

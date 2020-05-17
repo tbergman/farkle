@@ -95,9 +95,11 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
   },
   farkle: {
     entry: 'resetScore',
-    after: {
-      2000: 'end',
-    },
+    on: {
+      END_TURN: {
+        target: 'end'
+      }
+    }
   },
   end: {
     type: 'final',
