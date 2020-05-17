@@ -151,7 +151,7 @@ const InternalDie3DComponent = ({
           castShadow
           object={dieGeom}
           scale={[DIE_SIZE, DIE_SIZE, DIE_SIZE]}
-          onClick={(e: Event) => handleClick(e)}
+          onPointerUp={(e:Event) => handleClick(e)}
         ></primitive>
       }
     </>
