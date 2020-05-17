@@ -18,7 +18,7 @@ export const dieDieContactMaterial = new CANNON.ContactMaterial(
   dieMaterial,
   {
     friction: 0.4,
-    restitution: 0.4,
+    restitution: 0.2,
   }
 )
 

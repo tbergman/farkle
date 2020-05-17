@@ -162,7 +162,7 @@ export const turnGuards: turnGuard = {
     if (!validMove) {console.log(dice)}
     return (
       validMove &&
-      (c.scores[c.player] > FarkleLogic.REQUIRED_POINTS_ON_BOARD || 
+      (c.scores[c.player] >= FarkleLogic.REQUIRED_POINTS_ON_BOARD || 
         (c.turnScore + c.scoreThisRoll) >= FarkleLogic.REQUIRED_POINTS_ON_BOARD
       )
     );
