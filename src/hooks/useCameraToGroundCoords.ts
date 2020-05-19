@@ -1,9 +1,9 @@
 import * as THREE from 'three';
 import { useThree } from 'react-three-fiber';
-import { useEffect, useRef, MutableRefObject, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { round } from '../util/round';
 
-export const useGroundCoords = (cameraX: number, cameraY: number):THREE.Vector3 => {
+export const useCameraToGroundCoords = (cameraX: number, cameraY: number):THREE.Vector3 => {
   const {camera, raycaster, scene} = useThree();
   const [groundCoords, setGroundCoords] = useState<THREE.Vector3>(new THREE.Vector3(0,0,0))
 

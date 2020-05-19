@@ -1,13 +1,15 @@
 import React, { useCallback } from 'react';
-import './App.scss';
-import { createFarkleGame } from './game/Farkle';
 import { useMachine } from '@xstate/react';
+import { createFarkleGame } from './game/Farkle';
 import { mergeBoolean } from './game/Turn';
+import './App.scss';
 import ScoreTable from './components/ScoreTable';
 import TurnStatus from './components/TurnStatus';
 import FarkleThreeCanvas from './three/ThreeCanvas';
 import GameButtons from './components/GameControls';
 import GameIntro from './components/GameIntro';
+import FarkleMessage from './components/FarkleMessage';
+
 
 function App() {
   const [current, send] = useMachine(createFarkleGame(2));
@@ -32,14 +34,19 @@ function App() {
       />
       {isGameStarted ? (
         <>
-          <TurnStatus 
-            turnState={turnState} 
-            playerId={current.context.player} 
-            turnScore={current.context.scoreThisRoll}
-          />
-          <GameButtons turnState={turnState} sendGameEvent={send} />
-          <ScoreTable scores={current.context.scores}/>
-          <button className="log-button" onClick={() => logState()}>Log</button>
+          <FarkleMessage isVisible={turnState === 'farkle'}/>
+          <div className="game-chrome">
+            <TurnStatus
+              turnState={turnState}
+              playerId={current.context.player}
+              turnScore={current.context.scoreThisRoll}
+            />
+            <GameButtons turnState={turnState} sendGameEvent={send} />
+          </div>
+          <ScoreTable scores={current.context.scores} />
+          <button className="log-button" onClick={() => logState()}>
+            Log
+          </button>
         </>
       ) : (
         <GameIntro startGame={() => send('START')} />

@@ -1,41 +1,12 @@
 .turn-status {
+  display: grid;
   color: white;
+  grid-template-columns: 1fr 1fr;
 
-  .farkle-message {
-    $text-outline: 4px;
 
-    position: absolute;
-    top: 0;
-    display: none;
-    width: 100vw;
-    margin: 0;
-    color: var(--color-primary);
-    font-family: var(--font-header);
-    font-size: calc(min(max(40px, 8vw), 112px));
-    letter-spacing: 0.5em;
-    line-height: 100vh;
-    opacity: 0;
-    pointer-events: none;
-    text-shadow:
-      -#{$text-outline} #{$text-outline} 0 black,
-      0 0 0.33em var(--color-primary-dark);
-    // -webkit-text-stroke: 1px var(--color-ground);
-    text-transform: uppercase;
-
-    &.is_visible {
-      display: block;
-      animation: farkle-message 200ms ease-out;
-      opacity: 1;
-    }
-  }
-
-  @keyframes farkle-message {
-    0% {
-      transform: scale(0.1);
-    }
-
-    100% {
-      transform: scale(1) rotateX(5deg);
-    }
+  .status-player,
+  .status-score {
+    margin: 16px;
+    line-height: 48px;
   }
 }

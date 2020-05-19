@@ -13,6 +13,8 @@ import { throwConditions, initialConditions, formation } from './initialConditio
 import { usePrevious } from '../../hooks/usePrevious';
 import { DIE_MASS, DIE_SIZE, FPS } from '../constants';
 import { dieMaterial, frozenMaterial } from '../materials';
+import {useCameraToGroundCoords} from '../../hooks/useCameraToGroundCoords';
+import { ConvertVector } from '../../util/vectorConvert';
 
 const max_seconds_to_settle = 2;
 
@@ -36,11 +38,8 @@ const InternalDie3DComponent = ({
   const [material, setMaterial] = useState<THREE.MeshStandardMaterial>();
   const [framesSinceRoll, setFramesSinceRoll] = useState(0);
   const prevTurnState = usePrevious(turnState);
-
+  const freezePosition = useCameraToGroundCoords( -5/8 + (2/8 * id), 0.8);
   const isNewRoll = useRef(false)
-
-  // useTraceUpdate({id, isFrozen, turnState, onFreeze, onValueSet});
-  // useRenderCount(`die ${id}`)
 
   if (!dieGeom) { setDieGeom(dieGltf.scene.clone(true));}
   
@@ -118,18 +117,19 @@ const InternalDie3DComponent = ({
       if (isFrozen) {
         material.emissive = new THREE.Color(0x0088ff);
         bodyRef.current.material = frozenMaterial
-        bodyRef.current.position = new CANNON.Vec3(
-          formation(id).x - 1,
-          formation(id).y - 1,
-          formation(id).z
-        )
+        bodyRef.current.position = ConvertVector.ThreeToCannon(freezePosition);
+        
+        // new CANNON.Vec3(
+        //   formation(id).x - 1,
+        //   formation(id).y - 1,
+        //   formation(id).z
+        // )
       } else {
         material.emissive = new THREE.Color(0x000000);
         bodyRef.current.material = dieMaterial
-        // bodyRef.current.mass = DIE_MASS
       }
     }
-  }, [bodyRef.current.mass, id, isFrozen, material]);
+  }, [bodyRef.current.mass, freezePosition, id, isFrozen, material]);
 
   const getValue = (): DieValue => {
     if (ref && ref.current) {

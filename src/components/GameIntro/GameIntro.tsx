@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import './GameIntro.styles.scss'
 import GameButton from '../GameButton';
 import './GameIntro.styles.scss';
-import { FarkleLogic } from '../../game/FarkleLogic';
 import GameInstructions from './GameInstructions';
 
 type GameIntroProps = {

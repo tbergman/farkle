@@ -6,7 +6,7 @@ import { groundMaterial } from '../materials';
 import { useThree } from 'react-three-fiber';
 import { ConvertVector } from '../../util/vectorConvert';
 import Box from '../Box';
-import { useGroundCoords } from '../../hooks/useGroundCoords';
+import { useCameraToGroundCoords } from '../../hooks/useCameraToGroundCoords';
 //import { Test } from './Boundary.styles';
 
 type TSide = 'top' | 'right' | 'bottom' | 'left' 
@@ -78,10 +78,10 @@ const BoundaryPlane = ({coords}: BoundaryPlaneProps) => {
 // ------------------------------------------
 const Boundary = () => {
 
-  const tl = useGroundCoords(-1, 1);
-  const tr = useGroundCoords(1, 1);
-  const br = useGroundCoords(1, -1);
-  const bl = useGroundCoords(-1, -1);
+  const tl = useCameraToGroundCoords(-1, 1);
+  const tr = useCameraToGroundCoords(1, 1);
+  const br = useCameraToGroundCoords(1, -0.8);
+  const bl = useCameraToGroundCoords(-1, -0.8);
 
   return (
     <>
