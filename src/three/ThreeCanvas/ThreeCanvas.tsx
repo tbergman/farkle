@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import * as THREE from 'three';
 import { Canvas } from 'react-three-fiber';
 import Die3DComponent from '../Die3DComponent';
-import Plane from '../Plane';
 import { CannonContextProvider } from '../CannonContext';
 import { DiceValueArray, DieValue } from '../../game/Die';
 import { State } from 'xstate';
@@ -13,6 +12,9 @@ import OrbitControlsComponent from './OrbitControls';
 import StatsComponent from './StatsComponent';
 import { CAMERA_POSITION, SPOTLIGHT_POSITION, GROUND_SIZE } from '../constants';
 import Camera from './Camera';
+import Lighting from './Lighting';
+import Boundary from '../Boundary';
+import Ground from '../Ground';
 
 type FarkleThreeCanvasProps = {
   gameState: State<gameContext, gameEvent, any, any>,
@@ -73,33 +75,15 @@ const FarkleThreeCanvas = ({
       >
         <StatsComponent />
         <OrbitControlsComponent />
-        
-        <Camera position={CAMERA_POSITION}/>
-        <ambientLight intensity={0.5} />
-        <spotLight
-          intensity={0.9}
-          position={SPOTLIGHT_POSITION}
-          angle={0.2}
-          penumbra={1}
-          castShadow
-        />
 
-        {/* <pointLight position={[10, 10, 10]}/> */}
-        {/* <axesHelper /> */}
-        {/* <arrowHelper ref={arrowHelperRef} /> */}
-        {/* <planeHelper plane={new THREE.Plane(new THREE.Vector3(0, 0, 1))} size={10} /> */}
-        {/* <gridHelper /> */}
+        <Camera position={CAMERA_POSITION} />
 
-        {/* <Box position={[0, 0, 0]} scale={[0.1, 0.1, 0.1]} />
-        <Box position={[5, 5, 0]} scale={[0.1, 0.1, 0.1]} />
-        <Box position={[5, -5, 0]} scale={[0.1, 0.1, 0.1]} />
-        <Box position={[-5, 5, 0]} scale={[0.1, 0.1, 0.1]} />
-        <Box position={[-5, -5, 0]} scale={[0.1, 0.1, 0.1]} /> */}
+        <Lighting countSpotlights={3} />
 
         <CannonContextProvider>
-          <Plane position={[0, 0, -0]} size={GROUND_SIZE}/>
-          {
-            gameState.value !== 'idle' &&
+          <Boundary />
+          <Ground position={[0, 0, -0]} size={GROUND_SIZE} />
+          {gameState.value !== 'idle' &&
             gameState.value !== 'end' &&
             _dieIds.map((id) => (
               <Die3DComponent

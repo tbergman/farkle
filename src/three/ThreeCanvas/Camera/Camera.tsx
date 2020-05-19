@@ -9,14 +9,19 @@ type CameraProps = {
 const Camera = ({position} : CameraProps) => {
   const ref = useRef<PerspectiveCamera>();
   const {setDefaultCamera} = useThree();
+  
   // Make the camera known to the system
   useEffect(() => {
     if (ref.current) setDefaultCamera(ref.current)
   }, [ref, setDefaultCamera]);
+
   // Update it every frame
   useFrame(() => ref.current?.updateMatrixWorld());
 
-  return <perspectiveCamera ref={ref} position={position} />;
+  return <perspectiveCamera 
+    ref={ref} 
+    position={position}
+  />;
 } 
 
 export default Camera;
