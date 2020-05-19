@@ -14,9 +14,9 @@ const GameInstructions = () => (
       dice they just rolled.
     </p>
     <p>
-      You need to score at least {FarkleLogic.REQUIRED_POINTS_ON_BOARD} points
+      You need to score <strong>at least {FarkleLogic.REQUIRED_POINTS_ON_BOARD} points </strong>
       to get on the board. After that you can take as few or as many points as
-      you want. But be carefult not to Farkle!
+      you want. But be careful not to Farkle!
     </p>
     <h2 className="intro-subheader">Scoring</h2>
     <table className="scoring-table">
@@ -27,7 +27,6 @@ const GameInstructions = () => (
         </tr>
       </thead>
       <tbody>
-
         <tr>
           <th>5</th>
           <td>50 points</td>
@@ -61,8 +60,16 @@ const GameInstructions = () => (
           <td>600 points</td>
         </tr>
         <tr>
-          <th>4+-of-a-kind</th>
-          <td>Add the 3-of-a-kind score for each each extra die</td>
+          <th>4-of-a-kind</th>
+          <td>Double the 3-of-a-kind score for the die's value</td>
+        </tr>
+        <tr>
+          <th>5-of-a-kind</th>
+          <td>Triple the 3-of-a-kind score for the die's value</td>
+        </tr>
+        <tr>
+          <th>6-of-a-kind</th>
+          <td>Quadruple the 3-of-a-kind score for the die's value</td>
         </tr>
         <tr>
           <th>Straight</th>

@@ -80,8 +80,8 @@ const Boundary = () => {
 
   const tl = useCameraToGroundCoords(-1, 1);
   const tr = useCameraToGroundCoords(1, 1);
-  const br = useCameraToGroundCoords(1, -0.8);
-  const bl = useCameraToGroundCoords(-1, -0.8);
+  const br = useCameraToGroundCoords(1, -0.7);
+  const bl = useCameraToGroundCoords(-1, -0.7);
 
   return (
     <>

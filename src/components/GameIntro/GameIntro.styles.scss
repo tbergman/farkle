@@ -1,6 +1,13 @@
 $vertical-margin: 32px;
 $padding: calc(min(8vw, 48px));
 
+.intro-container {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  place-items: center;
+}
+
 .game-intro {
   width: 80%;
   max-width: 720px;

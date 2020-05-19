@@ -9,7 +9,7 @@ import { getDieValue } from './getDieValue';
 import { StateValue } from 'xstate';
 import { hasSettled, forceSettle } from './hasSettled';
 import { DieValue } from '../../game/Die';
-import { throwConditions, initialConditions, formation } from './initialConditions';
+import { throwConditions, initialConditions } from './initialConditions';
 import { usePrevious } from '../../hooks/usePrevious';
 import { DIE_MASS, DIE_SIZE, FPS } from '../constants';
 import { dieMaterial, frozenMaterial } from '../materials';
@@ -38,7 +38,7 @@ const InternalDie3DComponent = ({
   const [material, setMaterial] = useState<THREE.MeshStandardMaterial>();
   const [framesSinceRoll, setFramesSinceRoll] = useState(0);
   const prevTurnState = usePrevious(turnState);
-  const freezePosition = useCameraToGroundCoords( -5/8 + (2/8 * id), 0.8);
+  const freezePosition = useCameraToGroundCoords( -5/8 + (2/8 * id), 0.7);
   const isNewRoll = useRef(false)
 
   if (!dieGeom) { setDieGeom(dieGltf.scene.clone(true));}

@@ -10,22 +10,24 @@ type GameIntroProps = {
 
 const GameIntro = ({startGame}: GameIntroProps) => {
 
-  const [showInstructions, setShowInstructions] = useState(true)
+  const [showInstructions, setShowInstructions] = useState(false)
 
   return (
-    <section className="game-intro">
-      <div className="intro-header">
-        <h1 className="title">Farkle</h1>
-        <GameButton onClick={() => startGame()}>Start game!</GameButton>
-        <br/>
-        <button 
-          className="toggle-instructions-button" 
-          onClick={() => {setShowInstructions(!showInstructions)}}>
-            {showInstructions ? 'Hide' : 'Show'} instructions
-        </button>
-      </div>
-      {showInstructions && <GameInstructions />}
-    </section>
+    <div className="intro-container">
+      <section className="game-intro">
+        <div className="intro-header">
+          <h1 className="title">Farkle</h1>
+          <GameButton onClick={() => startGame()}>Start game!</GameButton>
+          <br/>
+          <button 
+            className="toggle-instructions-button" 
+            onClick={() => {setShowInstructions(!showInstructions)}}>
+              {showInstructions ? 'Hide' : 'Show'} instructions
+          </button>
+        </div>
+        {showInstructions && <GameInstructions />}
+      </section>
+    </div>
   );
 }
 

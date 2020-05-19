@@ -43,7 +43,10 @@ function App() {
             />
             <GameButtons turnState={turnState} sendGameEvent={send} />
           </div>
-          <ScoreTable scores={current.context.scores} />
+          <ScoreTable 
+            scores={current.context.scores} 
+            currentPlayer={current.context.player}
+          />
           <button className="log-button" onClick={() => logState()}>
             Log
           </button>

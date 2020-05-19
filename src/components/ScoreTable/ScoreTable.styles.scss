@@ -1,4 +1,25 @@
-/* your css code */
+@import '../../style/colors.scss';
+
 .score-table {
-  margin: 16px;
+  display: grid;
+  color: white;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+
+  .player-column {
+    margin: 8px;
+
+    &.current {
+      background-color: mix($gold, transparent, 20);
+      border-radius: 2px;
+    }
+
+    .name {
+      font-size: 20px;
+    }
+
+    .score {
+      font-size: 18px;
+    }
+  }
 }

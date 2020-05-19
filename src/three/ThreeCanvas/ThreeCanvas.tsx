@@ -73,10 +73,10 @@ const FarkleThreeCanvas = ({
           (gl.shadowMap.type = THREE.PCFSoftShadowMap) as any
         )}
       >
-        <StatsComponent />
+        <Camera position={CAMERA_POSITION} />
+        {/* <StatsComponent /> */}
         <OrbitControlsComponent />
 
-        <Camera position={CAMERA_POSITION} />
 
         <Lighting countSpotlights={3} />
 
