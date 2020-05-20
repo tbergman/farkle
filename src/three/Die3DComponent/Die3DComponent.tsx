@@ -14,7 +14,7 @@ import { usePrevious } from '../../hooks/usePrevious';
 import { DIE_MASS, DIE_SIZE, FPS } from '../constants';
 import { dieMaterial, frozenMaterial } from '../materials';
 import {useCameraToGroundCoords} from '../../hooks/useCameraToGroundCoords';
-import { ConvertVector } from '../../util/vectorConvert';
+import { ConvertVector, Vec3Array } from '../../util/vectorConvert';
 
 const max_seconds_to_settle = 2;
 
@@ -23,7 +23,9 @@ type dieProps = {
   isFrozen: boolean,
   turnState: StateValue,
   onFreeze: Function,
-  setValue: Function
+  setValue: Function,
+  position?: CANNON.Vec3 | THREE.Vector3,
+  rotation?: Vec3Array
 }
 
 const InternalDie3DComponent = ({
@@ -32,6 +34,8 @@ const InternalDie3DComponent = ({
   turnState, 
   setValue, 
   onFreeze,
+  position,
+  rotation
 }: dieProps) => {
   const dieGltf = useLoader(GLTFLoader, 'assets/die.glb');
   const [dieGeom, setDieGeom] = useState<THREE.Group>();
@@ -67,6 +71,14 @@ const InternalDie3DComponent = ({
     }
   );
   const bodyRef = useRef(body)
+
+  useEffect(() => {
+    if (!!position) body.position = ConvertVector.toCannon(position)
+  }, [body.position, position])
+
+  useEffect(() => {
+    if (!!rotation) body.quaternion.setFromEuler(rotation[0], rotation[1], rotation[2], 'YZX')
+  }, [body.quaternion, rotation])
 
   // When turnState changes, roll again
   useEffect(() => {
@@ -117,7 +129,7 @@ const InternalDie3DComponent = ({
       if (isFrozen) {
         material.emissive = new THREE.Color(0x0088ff);
         bodyRef.current.material = frozenMaterial
-        bodyRef.current.position = ConvertVector.ThreeToCannon(freezePosition);
+        bodyRef.current.position = ConvertVector.toCannon(freezePosition);
         
         // new CANNON.Vec3(
         //   formation(id).x - 1,

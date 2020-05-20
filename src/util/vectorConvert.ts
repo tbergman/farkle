@@ -4,10 +4,10 @@ import * as THREE from 'three';
 export type Vec3Array = [number, number, number]
 
 export class ConvertVector {
-  static CannonTo3 = (C: CANNON.Vec3): THREE.Vector3 => {
+  static toThree = (C: CANNON.Vec3 | THREE.Vector3): THREE.Vector3 => {
     return new THREE.Vector3(C.x, C.y, C.z);
   };
-  static ThreeToCannon = (_3: THREE.Vector3): CANNON.Vec3 => {
+  static toCannon = (_3: THREE.Vector3 | CANNON.Vec3): CANNON.Vec3 => {
     return new CANNON.Vec3(_3.x, _3.y, _3.z);
   };
   static toArray(Vec: THREE.Vector3 | CANNON.Vec3):Vec3Array {

@@ -2,10 +2,12 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import DiceValueTester from './tests/DiceValueTester';
 
 ReactDOM.render(
   <React.StrictMode>
     <App />
+    {/* <DiceValueTester /> */}
   </React.StrictMode>,
   document.getElementById('root')
 );
