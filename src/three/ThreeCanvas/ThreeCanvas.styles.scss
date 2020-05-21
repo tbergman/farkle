@@ -1,7 +1,10 @@
+@import '../../style/vh.scss';
+
 .three-canvas {
   position: absolute;
   z-index: -1;
   top: 0;
   width: 100vw;
   height: 100vh;
+  height: vh(100);
 }

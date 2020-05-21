@@ -9,12 +9,12 @@ import { State } from 'xstate';
 import { gameContext, gameEvent } from '../../game/Farkle';
 import { usePrevious } from '../../hooks/usePrevious';
 import OrbitControlsComponent from './OrbitControls';
-import StatsComponent from './StatsComponent';
 import { CAMERA_POSITION, SPOTLIGHT_POSITION, GROUND_SIZE } from '../constants';
 import Camera from './Camera';
 import Lighting from './Lighting';
 import Boundary from '../Boundary';
 import Ground from '../Ground';
+import './ThreeCanvas.styles.scss';
 
 type FarkleThreeCanvasProps = {
   gameState: State<gameContext, gameEvent, any, any>,
@@ -61,9 +61,10 @@ const FarkleThreeCanvas = ({
   return (
     <>
       <Canvas
+        className="three-canvas"
         style={{
           width: '100vw',
-          height: '100vh',
+          height: `calc(100 * var(--vh))`,
           position: 'absolute',
           top: 0,
           zIndex: -1,
