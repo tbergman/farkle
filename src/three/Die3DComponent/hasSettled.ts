@@ -1,6 +1,7 @@
 import * as CANNON from 'cannon';
 import { round } from '../../util/round';
-import { DIE_SIZE } from '../constants';
+import { DIE_SIZE, EULER_ORDER } from '../constants';
+import { quat2Euler } from '../../util/quat2Euler';
 
 /**
  * 
@@ -33,8 +34,7 @@ export const hasSettled = (body: CANNON.Body):boolean => {
 export const isAtRightAngle = (body: CANNON.Body):boolean => {
   const _precision = 4
   const rightAngles = [0, round(Math.PI / 2, _precision), round(Math.PI, _precision)]
-  const eulerVec = new CANNON.Vec3(0,0,0)
-  body.quaternion.toEuler(eulerVec)
+  const eulerVec = quat2Euler(body.quaternion)
   const x = Math.abs(round(eulerVec.x, _precision))
   const y = Math.abs(round(eulerVec.y, _precision))
   const z = Math.abs(round(eulerVec.z, _precision))
@@ -45,15 +45,14 @@ export const forceSettle = (body: CANNON.Body):CANNON.Body => {
 
   body.velocity = new CANNON.Vec3(0, 0, 0)
   body.angularVelocity = new CANNON.Vec3(0, 0, 0)
-  let currentEuler = new CANNON.Vec3(0, 0, 0)
-  body.quaternion.toEuler(currentEuler) 
+  let currentEuler = quat2Euler(body.quaternion)
 
   // round angle to the nearest pi
   const newEuler:[number, number, number, string] = [
     ([-2, -1, 0, 1, 2].find(x => x === round(currentEuler.x / (Math.PI / 2), 1)) || currentEuler.x/(Math.PI/2)) * Math.PI/2,
     ([-2, -1, 0, 1, 2].find(y => y === round(currentEuler.y / (Math.PI / 2), 1)) || currentEuler.y/(Math.PI/2)) * Math.PI/2,
     ([-2, -1, 0, 1, 2].find(z => z === round(currentEuler.z / (Math.PI / 2), 1)) || currentEuler.z/(Math.PI/2)) * Math.PI/2,
-    'YZX'
+    EULER_ORDER
   ]
   body.quaternion.setFromEuler(...newEuler)
   // body.position.z = DIE_SIZE * 2

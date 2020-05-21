@@ -108,7 +108,6 @@ const lookupDieValue = (_rot: Array<number>): DieValue => {
     const r_round = round(r, mapPrecision)
     return [-pi, -pi / 2, 0, pi / 2, pi].includes(r_round) ? r_round : 0;
   });
-  // console.log(rot)
   return rotationToValueMap.get(rot.toString())
 }
 

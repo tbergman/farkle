@@ -11,10 +11,11 @@ import { hasSettled, forceSettle } from './hasSettled';
 import { DieValue } from '../../game/Die';
 import { throwConditions, initialConditions } from './initialConditions';
 import { usePrevious } from '../../hooks/usePrevious';
-import { DIE_MASS, DIE_SIZE, FPS } from '../constants';
+import { DIE_MASS, DIE_SIZE, FPS, EULER_ORDER } from '../constants';
 import { dieMaterial, frozenMaterial } from '../materials';
 import {useCameraToGroundCoords} from '../../hooks/useCameraToGroundCoords';
 import { ConvertVector, Vec3Array } from '../../util/vectorConvert';
+import { quat2Euler } from '../../util/quat2Euler';
 
 const max_seconds_to_settle = 2;
 
@@ -77,7 +78,7 @@ const InternalDie3DComponent = ({
   }, [body.position, position])
 
   useEffect(() => {
-    if (!!rotation) body.quaternion.setFromEuler(rotation[0], rotation[1], rotation[2], 'YZX')
+    if (!!rotation) body.quaternion.setFromEuler(rotation[0], rotation[1], rotation[2], EULER_ORDER)
   }, [body.quaternion, rotation])
 
   // When turnState changes, roll again
@@ -145,12 +146,14 @@ const InternalDie3DComponent = ({
 
   const getValue = (): DieValue => {
     if (ref && ref.current) {
-      const val = getDieValue([ref.current.rotation.x, ref.current.rotation.y, ref.current.rotation.z]);
+      const euler = quat2Euler(body.quaternion)
+      const val = getDieValue([euler.x, euler.y, euler.z]);
       return val;
     } else return 0;
   };
 
   const handleClick = (e: THREE.Event) => {
+    console.log(`value: ${getValue()}`)
     if (!hasSettled(bodyRef.current)) console.log(bodyRef.current)
     onFreeze(e)
   };

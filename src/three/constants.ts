@@ -16,3 +16,4 @@ export const THROW_POSITION = {
   z: 1.5 // m
 };
 export const THROW_SPEED = 0 // m/s
+export const EULER_ORDER = 'YZX'

@@ -2,9 +2,11 @@
 
 .score-table {
   display: grid;
+  background-color: transparent;
   color: white;
   grid-auto-columns: 1fr;
   grid-auto-flow: column;
+  pointer-events: none;
 
   .player-column {
     margin: 8px;

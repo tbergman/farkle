@@ -1,5 +1,5 @@
 import * as CANNON from 'cannon';
-import { DIE_SIZE, THROW_SPEED, THROW_POSITION } from '../constants';
+import { DIE_SIZE, THROW_SPEED, THROW_POSITION, EULER_ORDER } from '../constants';
 // units in mm & grams
 
 const _scale = DIE_SIZE
@@ -25,7 +25,7 @@ export const initialConditions = (id:number) => {
 
   let angularVelocity = new CANNON.Vec3(0, 0, 0);
 
-  let quaternion = new CANNON.Quaternion().setFromEuler(0, 0, 0);
+  let quaternion = new CANNON.Quaternion().setFromEuler(0, 0, 0, EULER_ORDER);
 
   // // For testing
   // if (id === 0) {
@@ -68,7 +68,8 @@ export const throwConditions = (id: number) => {
   let quaternion = new CANNON.Quaternion().setFromEuler(
     2 * Math.PI * Math.random(),
     2 * Math.PI * Math.random(),
-    2 * Math.PI * Math.random()
+    2 * Math.PI * Math.random(),
+    EULER_ORDER
   );
 
 

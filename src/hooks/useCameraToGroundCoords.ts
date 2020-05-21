@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import { useThree } from 'react-three-fiber';
 import { useEffect, useState } from 'react';
 import { round } from '../util/round';
+import { DIE_SIZE } from '../three/constants';
 
 export const useCameraToGroundCoords = (cameraX: number, cameraY: number):THREE.Vector3 => {
   const {camera, raycaster, scene} = useThree();
@@ -13,7 +14,9 @@ export const useCameraToGroundCoords = (cameraX: number, cameraY: number):THREE.
     const intersects = raycaster.intersectObjects(scene.children);
     const groundIxn = intersects.find((ix) => round(ix.point.z, 2) === 0);
     if (groundIxn) {
-      setGroundCoords(groundIxn.point)
+      const p = groundIxn.point
+      p.setZ(DIE_SIZE)
+      setGroundCoords(p)
     }
   }, [camera, cameraX, cameraY, raycaster, scene.children]);
 

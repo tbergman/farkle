@@ -3,7 +3,6 @@ import * as THREE from 'three';
 import { Canvas } from 'react-three-fiber';
 import Camera from '../../three/ThreeCanvas/Camera';
 import OrbitControlsComponent from '../../three/ThreeCanvas/OrbitControls';
-import Lighting from '../../three/ThreeCanvas/Lighting';
 import { CannonContextProvider } from '../../three/CannonContext';
 import Ground from '../../three/Ground';
 import { GROUND_SIZE } from '../../three/constants';

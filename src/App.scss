@@ -1,7 +1,10 @@
 @import './style/global.scss';
 
-.App {
+body {
   background-color: $green;
+}
+
+.App {
   font-family: var(--font-body);
   text-align: center;
 }

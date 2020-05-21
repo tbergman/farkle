@@ -32,6 +32,14 @@ const DieInGrid = ({ index, rotation, value }: DieInGridProps) => {
 
 const DiceGrid = () => {
 
+  const parseRotation = (rotation:string):Vec3Array => {
+    return rotation
+      .split(',')
+      .map((r: string) => {
+        return Number(r)
+      }) as Vec3Array
+  }
+
   return (
     <>{
       Array.from(rotationToValueMap).map((map:[string, number], i) => {
@@ -40,7 +48,7 @@ const DiceGrid = () => {
           <DieInGrid 
             key={i}
             index={i}
-            rotation={rotation.split(',').map((r:string) => Number(r)) as Vec3Array}
+            rotation={parseRotation(rotation)}
             value={value}
           />
         )
