@@ -1,6 +1,8 @@
 @import './style/global.scss';
 
 body {
+  --vh: 1vh;
+
   background-color: $green;
 }
 
@@ -13,7 +15,7 @@ body {
   position: absolute;
   bottom: 24px;
   width: 100%;
-  pointer-events: visiblePainted;
+  pointer-events: none;
 }
 
 .score-table {

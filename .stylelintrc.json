@@ -1,6 +1,7 @@
 {
   "extends": ["stylelint-config-standard","stylelint-config-idiomatic-order"],
   "rules" :{
+    "at-rule-no-unknown": null,
     "color-hex-case": null
   }
 }
