@@ -1,6 +1,7 @@
 @import '../../style/colors.scss';
 
 .score-table {
+  position: absolute;
   display: grid;
   background-color: transparent;
   color: white;

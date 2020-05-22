@@ -67,7 +67,7 @@ const FarkleThreeCanvas = ({
           height: `calc(100 * var(--vh))`,
           position: 'absolute',
           top: 0,
-          zIndex: -1,
+          zIndex: 0,
         }}
         onCreated={({gl}) => (
           (gl.shadowMap.enabled = true) as any,

@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect } from 'react';
-import PropTypes from 'prop-types';
 import { useMachine } from '@xstate/react';
+import {Redirect} from 'react-router-dom'
 import { createFarkleGame } from '../../game/Farkle';
 import FarkleThreeCanvas from '../../three/ThreeCanvas';
 import { mergeBoolean } from '../../game/Turn';
@@ -10,10 +10,14 @@ import TurnStatus from '../TurnStatus';
 import ScoreTable from '../ScoreTable';
 
 type GameProps = {
-  players: number
+  players: number,
+  onEndGame(
+    playerId: number,
+    score: number
+  ): void
 }
 
-const Game = ({players}: GameProps) => {
+const Game = ({ players, onEndGame}: GameProps) => {
   const [current, send] = useMachine(createFarkleGame(players));
   const isGameStarted = current.value !== 'idle' && current.value !== 'end';
   const turnState = Object.values(current.value)[0];
@@ -27,10 +31,19 @@ const Game = ({players}: GameProps) => {
     }
   }, [current, send])
 
+  useEffect(() => {
+    if (current.matches('end_game') && current.context.winner) {
+      const winner = current.context.winner
+      onEndGame(winner, current.context.scores[winner])
+    }
+  })
+
   const sendGameEvent = useCallback(send, [])
 
   return (
     <>
+    {!current && <Redirect to='/' />}
+
     <FarkleThreeCanvas
       gameState={current}
       frozenDice={mergeBoolean(
