@@ -21,14 +21,17 @@
     "node-sass": "^4.13.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
     "react-scripts": "3.4.1",
     "react-three-fiber": "^4.1.1",
     "rxjs": "^6.5.5",
     "stylelint": "^13.3.3",
+    "stylelint-8-point-grid": "^0.2.6",
     "stylelint-order": "^4.0.0",
     "three": "^0.115.0",
     "typescript": "~3.7.2",
     "use-cannon": "^0.4.4",
+    "use-subscription": "^1.4.1",
     "xstate": "^4.9.1"
   },
   "scripts": {
@@ -56,6 +59,8 @@
   "devDependencies": {
     "@types/classnames": "^2.2.10",
     "@types/lodash": "^4.14.150",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/use-subscription": "^1.0.0",
     "stylelint-config-idiomatic-order": "^8.1.0",
     "stylelint-config-standard": "^20.0.0",
     "ts-node": "^8.9.0"

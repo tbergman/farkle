@@ -1,4 +1,4 @@
-import { Machine, assign } from 'xstate';
+import { Machine, assign, StateMachine } from 'xstate';
 import {
   turnStates,
   turnGuards,
@@ -28,6 +28,7 @@ export type gameEvent =
   | {type: 'END_TURN'}
   | {type: 'END'};
 
+export type gameMachine = StateMachine<gameContext, any, gameEvent>
 
 export const createFarkleGame = (countPlayers: number) => {
   const playerStates: {[key: string]: any} = {};

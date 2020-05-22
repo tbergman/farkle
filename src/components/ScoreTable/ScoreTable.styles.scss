@@ -12,7 +12,7 @@
     margin: 8px;
 
     &.current {
-      background-color: mix($gold-light, transparent, 20);
+      border: 2px ridge mix($gold, transparent, 50);
       border-radius: 2px;
     }
 

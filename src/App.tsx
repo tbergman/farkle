@@ -1,59 +1,33 @@
-import React, { useCallback } from 'react';
-import { useMachine } from '@xstate/react';
-import { createFarkleGame } from './game/Farkle';
-import { mergeBoolean } from './game/Turn';
+import React, { useState } from 'react';
 import './App.scss';
-import ScoreTable from './components/ScoreTable';
-import TurnStatus from './components/TurnStatus';
-import FarkleThreeCanvas from './three/ThreeCanvas';
-import GameButtons from './components/GameControls';
 import GameIntro from './components/GameIntro';
-import FarkleMessage from './components/FarkleMessage';
-
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
+import Game from './components/Game';
 
 function App() {
-  const [current, send] = useMachine(createFarkleGame(2));
-  const isGameStarted = current.value !== 'idle' && current.value !== 'end';
-  const turnState = Object.values(current.value)[0];
-
-  const logState = () => {
-    console.log(current)
+  const [players, setPlayers] = useState<number>(0)
+  const startGame = (n: number) => {
+    setPlayers(n)
   }
-
-  const sendGameEvent = useCallback(send, [])
 
   return (
     <div className="App">
-      <FarkleThreeCanvas
-        gameState={current}
-        frozenDice={mergeBoolean(
-          current.context.frozen,
-          current.context.frozenThisRoll
-        )}
-        sendGameEvent={sendGameEvent}
-      />
-      {isGameStarted ? (
-        <>
-          <FarkleMessage isVisible={turnState === 'farkle'}/>
-          <div className="game-chrome">
-            <TurnStatus
-              turnState={turnState}
-              playerId={current.context.player}
-              turnScore={current.context.scoreThisRoll}
-            />
-            <GameButtons turnState={turnState} sendGameEvent={send} />
-          </div>
-          <ScoreTable 
-            scores={current.context.scores} 
-            currentPlayer={current.context.player}
-          />
-          <button className="log-button" onClick={() => logState()}>
-            Log
-          </button>
-        </>
-      ) : (
-        <GameIntro startGame={() => send('START')} />
-      )}
+      <Router>
+      {players > 0 && <Redirect to='/play' />}
+        <Switch>
+          <Route path="/play">
+            <Game players={players} />
+          </Route>
+          <Route path="/">
+            <GameIntro startGame={startGame} />
+          </Route>
+        </Switch>
+      </Router>
     </div>
   );
 }

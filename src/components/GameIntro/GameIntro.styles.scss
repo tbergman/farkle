@@ -1,10 +1,11 @@
+@import '../../style/vh.scss';
 $vertical-margin: 32px;
 $padding: calc(min(8vw, 48px));
 
 .intro-container {
   display: flex;
   width: 100vw;
-  height: 100vh;
+  height: vh(100);
   place-items: center;
 }
 
@@ -12,43 +13,48 @@ $padding: calc(min(8vw, 48px));
   width: 80%;
   max-width: 720px;
   height: auto;
-  max-height: calc(100vh - 2 * #{$vertical-margin});
+  max-height: calc(#{vh(100)} - 2 * #{$vertical-margin});
   box-sizing: border-box;
-  padding-bottom: $padding;
+  padding: $padding;
   border: 8px ridge var(--color-primary-light);
   margin: $vertical-margin auto;
   background-color: var(--color-primary-light);
   border-radius: 8px;
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.33);
   overflow-y: scroll;
 
   & > * {
     padding: 0 $padding;
   }
 
-  .intro-header {
-    position: sticky;
-    top: 0;
-    padding-top: $padding;
-    background: linear-gradient(180deg, var(--color-primary-light) 0%, var(--color-primary-light) 90%, transparent 100%);
-  }
-
   .title {
-    position: sticky;
-    top: 0;
-    margin: 0 auto 0.5em;
+    margin: 8px auto;
     font-family: var(--font-header);
     font-size: calc(min(12vw, 64px));
     text-align: center;
   }
 
-  .gameButton {
-    position: sticky;
-    top: 48px;
+  #player-picker-form {
+    margin: 24px auto;
+
+    #player-count {
+      padding: 4px;
+      border: 2px solid var(--color-primary);
+      margin: 0 8px;
+      border-radius: 4px;
+      font-size: 1em;
+      outline-color: var(--color-primary);
+
+      * ::selection {
+        background-color: var(--color-primary-light);
+      }
+    }
   }
 
   .toggle-instructions-button {
-    padding: 1em 0;
+    padding: 0.25em 0;
     border: none;
+    margin: 1em 0;
     background-color: transparent;
     font-size: 12px;
     outline-color: var(--color-primary);
