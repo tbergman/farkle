@@ -3,11 +3,12 @@
 %message-wrapper {
   position: absolute;
   top: 0;
-  display: flex;
+  display: grid;
   width: 100vw;
   height: vh(100);
   margin: 0;
   place-items: center;
+  pointer-events: none;
 }
 
 %full-screen-message-box {

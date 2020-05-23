@@ -7,13 +7,13 @@ type WinnerMessageProps = {
   score?: number
 }
 const WinnerMessage = ({ winner, score }: WinnerMessageProps) => (
-  <div className="message-wrapper">
+    <>
     <h2
       className={classNames('winner-message', {
-        is_visible: !!winner && winner >= 0
+        is_visible: winner !== null  && winner >= 0
       })}
     >
-      Player { winner && winner + 1 } wins!
+      Player {winner !== null && winner + 1 } wins!
     </h2>
     {
       !!score && (
@@ -22,7 +22,7 @@ const WinnerMessage = ({ winner, score }: WinnerMessageProps) => (
         </h3>
       )
     }
-  </div>
+    </>
 );
 
 export default WinnerMessage;

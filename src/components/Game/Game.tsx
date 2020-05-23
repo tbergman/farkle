@@ -10,6 +10,7 @@ import ScoreTable from '../ScoreTable';
 import WinnerMessage from '../messages/WinnerMessage';
 import { State, Interpreter } from 'xstate';
 import { Redirect } from 'react-router-dom';
+import FarkleBotComponent from '../../game/bots/FarkleBotComponent';
 
 type InternalGameComponentProps = {
   current: State<gameContext, gameEvent>,
@@ -26,8 +27,12 @@ const InternalGameComponent = ({current, send}: InternalGameComponentProps) => {
   }
 
   useEffect(() => {
-    if (current) {
+    if (current.matches('idle')) {
       send('START')
+    } else if (current.matches('end_game')) {
+      console.log('Game over', current.context)
+    } else {
+      // console.log(current)
     }
   }, [current, send])
 
@@ -45,8 +50,10 @@ const InternalGameComponent = ({current, send}: InternalGameComponentProps) => {
       />
       {isGameStarted &&
         <>
+        <div className="message-wrapper">
           <WinnerMessage winner={current.context.winner} />
           <FarkleMessage isVisible={turnState === 'farkle'} />
+        </div>
           <div className="game-chrome">
             <TurnStatus
               turnState={turnState}
@@ -59,9 +66,13 @@ const InternalGameComponent = ({current, send}: InternalGameComponentProps) => {
             scores={current.context.scores}
             currentPlayer={current.context.player}
           />
-          <button className="log-button" onClick={() => logState()}>
-            Log
-        </button>
+          <button className="log-button" onClick={() => logState()}>Log</button>
+
+          <FarkleBotComponent 
+            current={current} 
+            send={send} 
+            bots={[0,1]}
+          />
         </>
       }
     </>

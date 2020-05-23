@@ -88,9 +88,12 @@ export const createFarkleGame = (countPlayers: number) => {
       guards: {
         ...turnGuards,
         gameIsNotOver: (c, e) => {
+          const next_player = (c.player + 1) % c.countPlayers
           const isGameOver = (
-            c._firstTo10k >= 0 && c.player === c._firstTo10k - 1
+            c._firstTo10k >= 0 && next_player === c._firstTo10k
           )
+          // console.log(`First to 10k: ${c._firstTo10k}, next player: ${next_player}, isGameOver? ${isGameOver}`)
+
           return !isGameOver
         },
       },
