@@ -5,36 +5,45 @@ import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect
+  Redirect,
+  useLocation
 } from "react-router-dom";
 import Game from './components/Game';
 
-function App() {
+const AppRouterCtx = () => {
+  const location = useLocation();
   const [players, setPlayers] = useState<number>(0)
-
+  console.log(players <= 0 && location.pathname !== '/')
   const startGame = (n: number) => {
     setPlayers(n)
   }
 
-  const endGame = (playerId:number, score:number) => {
-    console.log(`Winner: Player ${playerId + 1}, with ${score} points`)
-  }
+  return (
+    <>
+    { players > 0 && <Redirect to='/play' />}
+    <Switch>
+      <Route path="/play">
+        <Game players={players} />
+      </Route>
+      <Route path="/">
+        <GameIntro startGame={startGame} />
+      </Route>
+    </Switch>
+    </>
+  )
+}
+
+const App = () => {
 
   return (
     <div className="App">
       <Router>
-        {players > 0 && <Redirect to='/play' />}
-        <Switch>
-          <Route path="/play">
-            <Game players={players} onEndGame={endGame}/>
-          </Route>
-          <Route path="/">
-            <GameIntro startGame={startGame} />
-          </Route>
-        </Switch>
+        <AppRouterCtx />
       </Router>
     </div>
   );
 }
+
+
 
 export default App;

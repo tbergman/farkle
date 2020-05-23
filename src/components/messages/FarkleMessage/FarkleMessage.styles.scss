@@ -1,0 +1,7 @@
+@import '../messages.scss';
+
+.farkle-message {
+  @extend %full-screen-message-box;
+  @extend %full-screen-message-style;
+  @extend %full-screen-message-transition;
+}
