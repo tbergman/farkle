@@ -1,26 +1,26 @@
 import React, { useState } from 'react';
-import './App.scss';
 import GameIntro from './components/GameIntro';
+import './App.scss';
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  Redirect,
-  useLocation
+  Redirect
 } from "react-router-dom";
 import Game from './components/Game';
+import { Player } from './game/player';
 
 const AppRouterCtx = () => {
-  const location = useLocation();
-  const [players, setPlayers] = useState<number>(0)
-  console.log(players <= 0 && location.pathname !== '/')
-  const startGame = (n: number) => {
-    setPlayers(n)
+  const [players, setPlayers] = useState<Array<Player>>([])
+
+  const startGame = (players: Array<Player>) => {
+    setPlayers(players)
+    localStorage.setItem('farkle-players', JSON.stringify(players))
   }
 
   return (
     <>
-    { players > 0 && <Redirect to='/play' />}
+    { players.length > 0 && <Redirect to='/play' />}
     <Switch>
       <Route path="/play">
         <Game players={players} />

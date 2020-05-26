@@ -6,9 +6,11 @@ import {
 } from './Turn';
 import { DiceValueArray } from './Die';
 import { FarkleLogic } from './FarkleLogic';
+import { Player } from './player';
+
 
 export type gameContext = {
-  countPlayers: number;
+  players: Array<Player>,
   player: number;
   dice: DiceValueArray;
   scores: Array<number>;
@@ -21,7 +23,7 @@ export type gameContext = {
 };
 
 export type gameEvent =
-  | {type: 'START'}
+  | {type: 'START', players: Array<Player>}
   | {type: 'ROLL'}
   | {type: 'SET_DICE'; values: DiceValueArray}
   | {type: 'FREEZE'; dieId: number}
@@ -30,7 +32,8 @@ export type gameEvent =
 
 export type gameMachine = StateMachine<gameContext, any, gameEvent>
 
-export const createFarkleGame = (countPlayers: number) => {
+export const createFarkleGame = (players: Array<Player>) => {
+  const countPlayers = players.length
   const playerStates: {[key: string]: any} = {};
   for (let i = 0; i < countPlayers; i++) {
     const next = i + 1 < countPlayers ? i + 1 : 0;
@@ -60,10 +63,10 @@ export const createFarkleGame = (countPlayers: number) => {
       id: 'farkle-game',
       initial: 'idle',
       context: {
-        countPlayers,
+        players,
         player: 0,
         dice: new Array(6).fill(0),
-        scores: new Array(countPlayers).fill(0),
+        scores: new Array(players.length).fill(0),
         frozen: new Array(6).fill(false),
         frozenThisRoll: new Array(6).fill(false),
         turnScore: 0,
@@ -88,7 +91,7 @@ export const createFarkleGame = (countPlayers: number) => {
       guards: {
         ...turnGuards,
         gameIsNotOver: (c, e) => {
-          const next_player = (c.player + 1) % c.countPlayers
+          const next_player = (c.player + 1) % c.players.length
           const isGameOver = (
             c._firstTo10k >= 0 && next_player === c._firstTo10k
           )
@@ -102,7 +105,7 @@ export const createFarkleGame = (countPlayers: number) => {
         ...turnActions,
         incrementPlayer: assign({
           player: (c, _e) => {
-            return c.player + 1 < c.countPlayers ? c.player + 1 : 0;
+            return c.player + 1 < c.players.length ? c.player + 1 : 0;
           },
         }),
         setIsFinalRound: assign({

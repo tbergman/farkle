@@ -11,19 +11,21 @@ import WinnerMessage from '../messages/WinnerMessage';
 import { State, Interpreter } from 'xstate';
 import { Redirect } from 'react-router-dom';
 import FarkleBotComponent from '../../game/bots/FarkleBotComponent';
+import { Player } from '../../game/player';
 
 type InternalGameComponentProps = {
   current: State<gameContext, gameEvent>,
-  send: Interpreter<gameContext, any, gameEvent>['send']
+  send: Interpreter<gameContext, any, gameEvent>['send'],
+  bots?: Array<number>
 }
+const InternalGameComponent = ({current, send, bots}: InternalGameComponentProps) => {
 
-const InternalGameComponent = ({current, send}: InternalGameComponentProps) => {
-
-  const isGameStarted = current.value !== 'idle' && current.value !== 'end';
   const turnState = Object.values(current.value)[0];
 
-  const logState = () => {
-    console.log(current)
+  const logState = () => {console.log(current)}
+  const debug = () => {
+    logState()
+    debugger
   }
 
   useEffect(() => {
@@ -38,6 +40,8 @@ const InternalGameComponent = ({current, send}: InternalGameComponentProps) => {
 
   const sendGameEvent = useCallback(send, [])
 
+  const getWinner = () => current.context.winner ? current.context.players[current.context.winner] : null
+
   return (
     <>
       <FarkleThreeCanvas
@@ -48,44 +52,48 @@ const InternalGameComponent = ({current, send}: InternalGameComponentProps) => {
         )}
         sendGameEvent={sendGameEvent}
       />
-      {isGameStarted &&
-        <>
-        <div className="message-wrapper">
-          <WinnerMessage winner={current.context.winner} />
-          <FarkleMessage isVisible={turnState === 'farkle'} />
+      <>
+      <div className="message-wrapper">
+        <WinnerMessage winner={getWinner()} />
+        <FarkleMessage farkled={turnState === 'farkle'} />
+      </div>
+        <div className="game-chrome">
+          <TurnStatus
+            turnState={turnState}
+            playerId={current.context.player}
+            turnScore={current.context.scoreThisRoll}
+          />
+          <GameButtons turnState={turnState} sendGameEvent={sendGameEvent} />
         </div>
-          <div className="game-chrome">
-            <TurnStatus
-              turnState={turnState}
-              playerId={current.context.player}
-              turnScore={current.context.scoreThisRoll}
-            />
-            <GameButtons turnState={turnState} sendGameEvent={sendGameEvent} />
-          </div>
-          <ScoreTable
-            scores={current.context.scores}
-            currentPlayer={current.context.player}
-          />
-          <button className="log-button" onClick={() => logState()}>Log</button>
+        <ScoreTable
+          names={current.context.players.map(p => p.name)}
+          scores={current.context.scores}
+          currentPlayer={current.context.player}
+        />
+        {/* <button className="log-button" onClick={() => logState()}>Log</button> */}
+        <button className="log-button" onClick={() => debug()}>Debug</button>
 
-          <FarkleBotComponent 
-            current={current} 
-            send={send} 
-            bots={[0,1]}
-          />
-        </>
-      }
+        <FarkleBotComponent 
+          current={current} 
+          send={send} 
+          bots={bots}
+        />
+      </>
     </>
   )  
 }
 
 type GameProps = {
-  players: number,
+  players: Array<Player>,
 }
 const Game = ({ players }: GameProps) => {
   try {
     const [current, send] = useMachine(createFarkleGame(players));
-    return <InternalGameComponent current={current} send={send} />
+    const bots = players
+      .map((p, i) => { return { t: p.type, i } })
+      .filter(ti => ti.t === 'computer')
+      .map(ti => ti.i)
+    return <InternalGameComponent current={current} send={send} bots={bots}/>
   } catch (error) {
     return <Redirect to="/" />
   }

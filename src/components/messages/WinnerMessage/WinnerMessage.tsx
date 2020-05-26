@@ -1,19 +1,20 @@
 import React from 'react';
 import classNames from 'classnames';
 import './WinnerMessage.styles.scss';
+import { Player } from '../../../game/player';
 
 type WinnerMessageProps = {
-  winner: number | null,
+  winner: Player | null,
   score?: number
 }
 const WinnerMessage = ({ winner, score }: WinnerMessageProps) => (
     <>
     <h2
       className={classNames('winner-message', {
-        is_visible: winner !== null  && winner >= 0
+        is_visible: winner !== null
       })}
     >
-      Player {winner !== null && winner + 1 } wins!
+      {winner?.name} wins!
     </h2>
     {
       !!score && (

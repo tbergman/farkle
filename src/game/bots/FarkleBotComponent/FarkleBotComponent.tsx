@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { State, Interpreter, StateValue } from 'xstate';
 import { gameContext, gameEvent } from '../../Farkle';
 import { FarkleLogic } from '../../FarkleLogic';
-import { DiceValueArray, DiceKeyValueArray } from '../../Die';
+import { DiceKeyValueArray } from '../../Die';
 
 
 type FarkleBotProps = {
@@ -15,8 +15,11 @@ const FarkleBotComponent = ({current, send, bots}: FarkleBotProps) => {
 
   const shouldRollAgain = (turnScore:number, diceRemaining:number):boolean => {
     return (
-      turnScore <= FarkleLogic.BOT_MIN_SCORE &&
-      diceRemaining >= 3
+      (
+        turnScore <= FarkleLogic.BOT_MIN_SCORE &&
+        diceRemaining >= 3
+      ) ||
+      diceRemaining === 0
     )
   }
 
@@ -55,14 +58,16 @@ const FarkleBotComponent = ({current, send, bots}: FarkleBotProps) => {
 
         const playerShouldRollAgain = shouldRollAgain(
           current.context.scoreThisRoll,
-          rolledDice.current.length - freezableDice.current.length
+          allDice.current.filter(d => !current.context.frozen[d.id] && !current.context.frozenThisRoll[d.id]).length
         )
 
         if (freezableDice.current.length) {
           send('FREEZE', { dieId: freezableDice.current[0].id })
           freezableDice.current.splice(0,1)
-        } else if (playerShouldRollAgain || !canEndTurn) {
-          send('ROLL')
+        } else if (playerShouldRollAgain || !canEndTurn || current.context._firstTo10k >= 0) {
+          setTimeout(() => {
+            send('ROLL')
+          }, 500);
         } else {
           setTimeout(() => {
             send('END_TURN')

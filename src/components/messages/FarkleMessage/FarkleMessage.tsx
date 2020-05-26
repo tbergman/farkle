@@ -3,12 +3,12 @@ import classNames from 'classnames';
 import './FarkleMessage.styles.scss';
 
 type FarkleMessageProps = {
-  isVisible: boolean
+  farkled: boolean
 }
-const FarkleMessage = ({isVisible}:FarkleMessageProps) => (
+const FarkleMessage = ({farkled}:FarkleMessageProps) => (
   <h2
     className={classNames('farkle-message', {
-      is_visible: isVisible
+      is_visible: farkled
     })}
   >
     Farkle!
