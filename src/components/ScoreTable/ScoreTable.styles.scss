@@ -15,6 +15,7 @@
     &.current {
       border: 2px ridge mix($gold, transparent, 50);
       border-radius: 2px;
+      grid-column: span 2;
     }
 
     .name {
