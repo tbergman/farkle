@@ -4,6 +4,7 @@
 
 $vertical-margin: 32px;
 $padding: calc(min(4vw, 48px));
+$max-width: 576px;
 
 .intro-container {
   display: flex;
@@ -17,7 +18,7 @@ $padding: calc(min(4vw, 48px));
   // @include verticalGradient($gold-lightest, $gold-lighter, 100%);
 
   width: 80%;
-  max-width: 720px;
+  max-width: $max-width;
   height: auto;
   max-height: calc(#{vh(100)} - 2 * #{$vertical-margin});
   box-sizing: border-box;
@@ -38,38 +39,6 @@ $padding: calc(min(4vw, 48px));
     font-family: var(--font-header);
     font-size: calc(min(12vw, 64px));
     text-align: center;
-  }
-
-  #player-picker-form {
-    display: grid;
-    margin: 24px auto;
-    gap: 8px;
-    justify-items: left;
-
-    .player-picker-form-field {
-      display: inline-block;
-    }
-
-    .player-form-input {
-      padding: 4px;
-      border: 1px solid var(--color-primary);
-      margin: 0 8px;
-      font-size: 1em;
-      outline-color: var(--color-primary);
-    }
-
-    #player-count {
-      padding: 4px;
-      border: 1px solid var(--color-primary);
-      margin: 0 8px;
-      border-radius: 4px;
-      font-size: 1em;
-      outline-color: var(--color-primary);
-
-      * ::selection {
-        background-color: var(--color-primary-lightest);
-      }
-    }
   }
 
   .toggle-instructions-button {
