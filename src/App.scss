@@ -1,8 +1,11 @@
 @import './style/global.scss';
+@import './style/mixins.scss';
 @import './style/vh.scss';
 
 body {
   --vh: 1vh;
+
+  @include CornerToCornerGradient($green, $green-dark);
 
   background-color: $green;
 }
