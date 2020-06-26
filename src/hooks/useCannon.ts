@@ -12,6 +12,7 @@ export function useCannon({...props}, callback: Function, deps = []) {
     callback(body); // Call function so the user can add shapes
     cannonContext.addBody(body); // Add body to world on mount
     return () => cannonContext.remove(body) // Remove body on unmount
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, deps);
   useFrame(() => {
     // Transport cannon physics into the referenced threejs object
