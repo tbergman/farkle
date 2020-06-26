@@ -10,11 +10,15 @@ import {
 import Game from './components/Game';
 import { Player } from './game/player';
 
-const AppRouterCtx = () => {
+const AppRouterContext = () => {
   const [players, setPlayers] = useState<Array<Player>>([])
 
   const startGame = (players: Array<Player>) => {
+    storePlayers(players)
     setPlayers(players)
+  }
+
+  const storePlayers = (players: Array<Player>) => {
     localStorage.setItem('farkle-players', JSON.stringify(players))
   }
 
@@ -37,8 +41,9 @@ const App = () => {
 
   return (
     <div className="App">
-      <Router>
-        <AppRouterCtx />
+
+      <Router> 
+        <AppRouterContext />
       </Router>
     </div>
   );

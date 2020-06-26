@@ -15,7 +15,9 @@ export class FarkleLogic {
   static THREE_PAIR_SCORE = 1000;
   static REQUIRED_POINTS_ON_BOARD = 1000;
   static END_GAME_POINTS = 10000;
+  static MAX_PLAYERS = 6;
   static BOT_MIN_SCORE = 300;
+
   
   static scoreMove(_dice: DiceValueArray): number {
     let score = 0;
