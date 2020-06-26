@@ -1,11 +1,9 @@
-import React, { useState, useEffect, useReducer } from 'react';
+import React, { useState, useEffect } from 'react';
 import * as CANNON from 'cannon';
 import * as THREE from 'three';
 import { useCannon } from '../../hooks/useCannon';
 import { groundMaterial } from '../materials';
-import { useThree } from 'react-three-fiber';
 import { ConvertVector } from '../../util/vectorConvert';
-import Box from '../Box';
 import { useCameraToGroundCoords } from '../../hooks/useCameraToGroundCoords';
 //import { Test } from './Boundary.styles';
 

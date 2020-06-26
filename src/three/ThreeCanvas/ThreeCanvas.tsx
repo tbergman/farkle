@@ -70,6 +70,7 @@ const FarkleThreeCanvas = ({
           zIndex: 0,
         }}
         onCreated={({gl}) => (
+          // eslint-disable-next-line no-sequences
           (gl.shadowMap.enabled = true) as any,
           (gl.shadowMap.type = THREE.PCFSoftShadowMap) as any
         )}

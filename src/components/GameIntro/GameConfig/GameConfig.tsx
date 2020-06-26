@@ -1,7 +1,12 @@
 import React, { ChangeEvent, useEffect, useState, useRef } from 'react';
 import { mapCount } from '../../../util/range';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faMinus, faPlus, faUser, faLaptop } from '@fortawesome/free-solid-svg-icons'
+import { 
+  faMinus, 
+  faPlus, 
+  // faUser, 
+  // faLaptop
+} from '@fortawesome/free-solid-svg-icons'
 import { Player, newPlayer, playerType } from '../../../game/player';
 import GameButton from '../../GameButton';
 import './GameConfig.styles.scss';

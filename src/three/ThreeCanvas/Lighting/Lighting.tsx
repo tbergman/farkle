@@ -1,7 +1,6 @@
-import React, { useRef } from 'react';
+import React from 'react';
 import { SPOTLIGHT_HEIGHT, SPOTLIGHT_RADIUS } from '../../constants';
 import { range } from '../../../util/range';
-import { SpotLight } from 'three';
 
 type LightingProps = {
   countSpotlights: number

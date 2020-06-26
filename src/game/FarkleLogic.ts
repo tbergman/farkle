@@ -1,5 +1,5 @@
 // import { DiceArray } from "./GameDice";
-import { Die, DieValue, DiceValueArray } from "./Die";
+import { DieValue, DiceValueArray } from "./Die";
 
 const countIf = (arr: Array<any>, callback: Function):number => {
   return arr.filter((x) => callback(x)).length
