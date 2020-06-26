@@ -10,7 +10,9 @@
   pointer-events: none;
 
   .player-column {
-    margin: 8px;
+    overflow: hidden;
+    padding: 8px;
+    margin: 4px;
 
     &.current {
       border: 2px ridge mix($gold, transparent, 50);
@@ -19,7 +21,10 @@
     }
 
     .name {
+      overflow: hidden;
       font-size: 20px;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .score {

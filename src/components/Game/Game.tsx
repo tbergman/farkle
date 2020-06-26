@@ -12,6 +12,7 @@ import { State, Interpreter } from 'xstate';
 import { Redirect } from 'react-router-dom';
 import FarkleBotComponent from '../../game/bots/FarkleBotComponent';
 import { Player } from '../../game/player';
+import './Game.styles.scss';
 
 type InternalGameComponentProps = {
   current: State<gameContext, gameEvent>,
@@ -63,7 +64,10 @@ const InternalGameComponent = ({current, send, bots}: InternalGameComponentProps
             playerId={current.context.player}
             turnScore={current.context.scoreThisRoll}
           />
-          <GameButtons turnState={turnState} sendGameEvent={sendGameEvent} />
+          <GameButtons 
+            turnState={turnState} 
+            sendGameEvent={sendGameEvent} 
+          />
         </div>
         <ScoreTable
           names={current.context.players.map(p => p.name)}

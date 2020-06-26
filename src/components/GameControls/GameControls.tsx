@@ -1,5 +1,6 @@
 import React from 'react';
 import { StateValue } from 'xstate';
+import classNames from 'classnames'
 import './GameControls.styles.scss'
 import GameButton from '../GameButton';
 
@@ -11,7 +12,7 @@ type GameButtonProps = {
 const GameControls = ({turnState, sendGameEvent}: GameButtonProps) => {
 
   return (
-    <div className="game-buttons">
+    <div className={classNames("game-buttons", { 'centered': turnState === 'start'})} >
       {(turnState === 'ready' || turnState === 'observing' || turnState === 'start') && (
         <GameButton onClick={() => sendGameEvent('ROLL')}>Roll</GameButton>
       )}
