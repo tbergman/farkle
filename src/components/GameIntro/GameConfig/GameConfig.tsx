@@ -100,7 +100,7 @@ const GameConfig = ({ startGame }: GameConfigProps) => {
           <FontAwesomeIcon icon={faPlus} /> Add Player
       </button>
     </div>
-    <GameButton onClick={() => startGame(players)}>Start game!</GameButton>
+    <GameButton className="start-button" onClick={() => startGame(players)}>Start game!</GameButton>
     </>
   )
 }
