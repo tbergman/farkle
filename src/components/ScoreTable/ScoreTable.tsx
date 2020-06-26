@@ -1,25 +1,23 @@
 import React from 'react';
+import './ScoreTable.styles.scss';
+import classNames from 'classnames';
 
 type ScoreTableProps = {
-  scores: Array<number>
+  names: Array<string>,
+  scores: Array<number>,
+  currentPlayer: number
 }
-const ScoreTable = ({scores}: ScoreTableProps) => (
-  <table>
-    <thead>
-      <tr>
-        {scores.map((_,id) => (
-          <th key={id}>Player {id + 1}</th>
-        ))}
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-        {scores.map((score, id) => (
-          <td key={id}>{score}</td>
-        ))}
-      </tr>
-    </tbody>
-  </table>
+const ScoreTable = ({names, scores, currentPlayer}: ScoreTableProps) => (
+  <section className="score-table">
+    {scores.map((score, id) => (
+      <div 
+        key={id}
+        className={classNames("player-column", {current: id === currentPlayer})}>
+        <h1 className="name">{names[id] || `Player ${id + 1}` }</h1>
+        <h2 className="score">{score}</h2>
+      </div>
+    ))}
+  </section>
 );
 
 

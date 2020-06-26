@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Fredoka+One&family=Open+Sans&display=swap');
+@import './colors';
+
+:root {
+  --font-header: 'Fredoka One', cursive;
+  --font-body: 'Open Sans', sans-serif;
+  --color-primary: #{$gold};
+  --color-primary-light: #{$gold-light};
+  --color-primary-lightest: #{$gold-lightest};
+  --color-primary-dark: #{$gold-dark};
+  --color-secondary: #{$blue};
+  --color-ground: #{$green};
+}
+
+body {
+  margin: 0;
+}

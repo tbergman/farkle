@@ -1,0 +1,31 @@
+.instructions {
+  text-align: left;
+
+  .intro-subheader {
+    font-family: var(--font-header);
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  p {
+    margin: 0.5em auto;
+  }
+
+  .scoring-table {
+    width: 100%;
+    font-size: 14px;
+
+    thead {
+      font-size: 1.2em;
+    }
+
+    tr {
+      & > *:first-child {
+        padding-right: 8px;
+        vertical-align: text-top;
+        white-space: nowrap;
+      }
+    }
+  }
+}

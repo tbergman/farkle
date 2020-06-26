@@ -1,1 +1,13 @@
-/* your css code */
+.turn-status {
+  display: grid;
+  color: white;
+  grid-auto-columns: 1fr;
+  grid-auto-flow: column;
+  pointer-events: none;
+
+  .status-player,
+  .status-score {
+    margin: 16px;
+    line-height: 48px;
+  }
+}

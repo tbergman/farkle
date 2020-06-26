@@ -1,0 +1,15 @@
+{
+  "extends": ["stylelint-config-standard","stylelint-config-idiomatic-order","stylelint-8-point-grid"],
+  "rules" :{
+    "at-rule-no-unknown": null,
+    "color-hex-case": null,
+    "plugin/8-point-grid": {
+      "base": 8,
+      "whitelist": [
+        "4px",
+        "2px",
+        "1px"
+      ]
+    }
+  }
+}

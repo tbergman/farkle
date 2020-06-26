@@ -1,0 +1,50 @@
+@import '../../style/vh.scss';
+
+%message-wrapper {
+  position: absolute;
+  top: 0;
+  display: grid;
+  width: 100vw;
+  height: vh(100);
+  margin: 0;
+  place-items: center;
+  pointer-events: none;
+}
+
+%full-screen-message-box {
+  display: none;
+  margin: 0;
+}
+
+%full-screen-message-style {
+  $text-outline: 4px;
+
+  color: var(--color-primary);
+  font-family: var(--font-header);
+  font-size: calc(min(max(40px, 8vw), 112px));
+  letter-spacing: 0.5em;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow:
+    -#{$text-outline} #{$text-outline} 0 black,
+    0 0 0.33em var(--color-primary-dark);
+  text-transform: uppercase;
+}
+
+%full-screen-message-transition {
+  &.is_visible {
+    display: block;
+    animation: full-screen-message 200ms ease-out;
+    opacity: 1;
+  }
+
+  @keyframes full-screen-message {
+    0% {
+      transform: scale(0.1);
+    }
+
+    100% {
+      transform: scale(1) rotateX(5deg);
+    }
+  }
+}

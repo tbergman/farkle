@@ -1,4 +1,4 @@
-import { Machine, StatesConfig, send, assign, ActionObject, ActionFunction, ConditionPredicate } from "xstate";
+import { StatesConfig, send, assign, ActionObject, ActionFunction, ConditionPredicate } from "xstate";
 // import { Player } from "./Player";
 // import { GameDice, DiceArray } from "./GameDice";
 // import { Subject, from, Observable, ObservableInput } from "rxjs";
@@ -9,21 +9,6 @@ import {gameContext, gameEvent} from './Farkle';
 
 const initialDice: DiceValueArray = [0, 0, 0, 0, 0, 0];
 const initialFrozen = [false, false, false, false, false, false];
-
-/**
- * 
- * TYPES
- */
-export type turnContext = {
-  dice: DiceValueArray;
-  frozen: Array<boolean>;
-  score: number;
-};
-
-export type turnEvent =
-  | {type: 'ROLL'}
-  | {type: 'FREEZE'; dieId: number}
-  | {type: 'END_TURN'};
 
 /**
  * 
@@ -56,24 +41,36 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
   },
 
   rolling: {
-    entry: [
-      'rollUnfrozen',
-    ],
-    after: {
-      100: [
-        {
+    on: {
+      SET_DICE: [
+        { 
+          actions: 'setDice',
           target: 'observing',
-          cond: 'isValidMoveAvailable',
-        },
-        {
-          target: 'farkle',
-        },
-      ],
+        }
+      ]
     }
+    // entry: [
+    //   'rollUnfrozen',
+    // ],
+    // after: {
+    //   100: [
+    //     {
+    //       target: 'observing',
+    //       cond: 'isValidMoveAvailable',
+    //     },
+    //     {
+    //       target: 'farkle',
+    //     },
+    //   ],
+    // }
   },
 
   observing: {
     on: {
+      '' : {
+        target: 'farkle',
+        cond: 'isFarkle'
+      },
       FREEZE: {
         actions: [
           'doFreeze',
@@ -98,9 +95,11 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
   },
   farkle: {
     entry: 'resetScore',
-    after: {
-      1000: 'end',
-    },
+    on: {
+      END_TURN: {
+        target: 'end'
+      }
+    }
   },
   end: {
     type: 'final',
@@ -118,11 +117,22 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
  */
 type turnGuard = Record<string, ConditionPredicate<gameContext, gameEvent>>
 export const turnGuards: turnGuard = {
+
   isValidMoveAvailable: (c, e)  => {
     const validExists = FarkleLogic.doesValidMoveExist(
       getUnfrozen(c.dice, c.frozen)
     );
     return validExists
+  },
+
+  isFarkle: (c, e) => {
+    const validExists = FarkleLogic.doesValidMoveExist(
+      getUnfrozen(c.dice, c.frozen)
+    );
+    if (!validExists) {
+      console.log(`You FARKLED!!!`, getUnfrozen(c.dice, c.frozen));
+    } 
+    return !validExists
   },
 
   isValidFreezeState: (c, e)  => {
@@ -135,27 +145,27 @@ export const turnGuards: turnGuard = {
   isFreezeInValidMove: (c, e) => true,
 
   canRollAgain: (c, e)=> {
+    const fzn = getFrozen(c.dice, c.frozenThisRoll);
     const canRoll =
-      FarkleLogic.isValidMove(
-        getFrozen(c.dice, c.frozenThisRoll)
-      ) && c.frozenThisRoll.filter((f) => !!f).length > 0;
+      FarkleLogic.isValidMove(fzn) && 
+      c.frozenThisRoll.filter((f) => !!f).length > 0;
+    if (!canRoll) {
+      console.log(`Can roll again? ${canRoll}.`, fzn)
+    }
     return canRoll
   },
 
   canEndTurn: (c, e) => {
-    const validMove = FarkleLogic.isValidMove(
-      getFrozen(
-        c.dice, 
-        mergeBoolean(c.frozen, c.frozenThisRoll)
-      )
-    )
+    const dice = getFrozen(c.dice, mergeBoolean(c.frozen, c.frozenThisRoll));
+    const validMove = FarkleLogic.isValidMove(dice)
     console.log(
-      `Trying to end turn. Is this a valid move? ${validMove}. Turn score: ${c.turnScore}`
+      `Trying to end turn. Is this a valid move? ${validMove}. Total score: ${c.turnScore + c.scoreThisRoll}`
     );
+    if (!validMove) {console.log(dice)}
     return (
       validMove &&
-      (c.scores[c.player] > 1000 || 
-        (c.turnScore + c.scoreThisRoll) >= 1000
+      (c.scores[c.player] >= FarkleLogic.REQUIRED_POINTS_ON_BOARD || 
+        (c.turnScore + c.scoreThisRoll) >= FarkleLogic.REQUIRED_POINTS_ON_BOARD
       )
     );
   }
@@ -167,6 +177,11 @@ export const turnGuards: turnGuard = {
  */
 type turnAction = Record<string, | ActionObject<gameContext, gameEvent> | ActionFunction<gameContext, gameEvent>>
 export const turnActions: turnAction = {
+
+  setDice: assign({
+    dice: (c,e) => e.type === 'SET_DICE' ? e.values : [...initialDice]
+  }),
+
   rollUnfrozen: assign({
     dice: (c,e) => {
       return c.frozen.map((f, i) => {
@@ -179,6 +194,7 @@ export const turnActions: turnAction = {
     frozenThisRoll: (c,e) => {
       if (e.type === 'FREEZE') {
         const id = e.dieId;
+        // console.log(`XSTATE: Freezing ${id}`)
         // if this die is not already frozen from another roll 
         if (!c.frozen[id]) {
           const _tmp_frzn = [...c.frozenThisRoll]

@@ -1,0 +1,7 @@
+.game-buttons {
+  pointer-events: none;
+
+  & * + * {
+    margin-left: 8px;
+  }
+}

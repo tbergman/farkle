@@ -1,15 +1,28 @@
+@import './style/global.scss';
+@import './style/mixins.scss';
+@import './style/vh.scss';
+
+body {
+  --vh: 1vh;
+
+  @include CornerToCornerGradient($green, $green-dark);
+
+  background-color: $green;
+}
+
 .App {
+  height: vh(100);
+  max-height: vh(100);
+  font-family: var(--font-body);
   text-align: center;
 }
 
-button {
-  height: 48px;
-  width: 96px;
-  background-color: aquamarine;
-  font-size: large;
-  cursor: pointer;
+.score-table {
+  width: 100%;
 }
 
-table {
-  margin: 16px auto
+.log-button {
+  position: absolute;
+  right: 16px;
+  bottom: 16px;
 }

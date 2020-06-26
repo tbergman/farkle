@@ -1,0 +1,11 @@
+@import '../messages.scss';
+
+.message-wrapper {
+  @extend %message-wrapper;
+}
+
+.winner-message {
+  @extend %full-screen-message-box;
+  @extend %full-screen-message-style;
+  @extend %full-screen-message-transition;
+}

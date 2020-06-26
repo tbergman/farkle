@@ -4,6 +4,11 @@
  */
 export type DieValue = 0 | 1 | 2 | 3 | 4 | 5 | 6;
 export type DiceValueArray = Array<DieValue>
+export type DieKeyValue = {
+  id: number,
+  value: DieValue
+}
+export type DiceKeyValueArray = Array<DieKeyValue>
 
 export class Die {
   private _id: number;

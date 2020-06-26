@@ -1,5 +1,5 @@
 // import { DiceArray } from "./GameDice";
-import { Die, DieValue, DiceValueArray } from "./Die";
+import { DieValue, DiceValueArray } from "./Die";
 
 const countIf = (arr: Array<any>, callback: Function):number => {
   return arr.filter((x) => callback(x)).length
@@ -13,8 +13,11 @@ export class FarkleLogic {
   static ONE_SCORE = 100;
   static STRAIGHT_SCORE = 1000;
   static THREE_PAIR_SCORE = 1000;
-  static REQUIRED_POINTS_ON_BOARD = 1000
-  static END_GAME_POINTS = 10000
+  static REQUIRED_POINTS_ON_BOARD = 1000;
+  static END_GAME_POINTS = 10000;
+  static MAX_PLAYERS = 6;
+  static BOT_MIN_SCORE = 300;
+
   
   static scoreMove(_dice: DiceValueArray): number {
     let score = 0;
@@ -83,6 +86,17 @@ export class FarkleLogic {
       FarkleLogic.isStraight(_diceToCheck) ||
       FarkleLogic.isThreePairs(_diceToCheck) ||
       _diceToCheck.every((value) => validValues.includes(value))
+    );
+  }
+
+  static canEndTurn(frozenDice: DiceValueArray, currentScore: number, turnScore: number) {
+    const isValidMove = FarkleLogic.isValidMove(frozenDice)
+    return (
+      isValidMove &&
+      (
+        currentScore >= FarkleLogic.REQUIRED_POINTS_ON_BOARD ||
+        turnScore >= FarkleLogic.REQUIRED_POINTS_ON_BOARD
+      )
     );
   }
 
