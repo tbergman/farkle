@@ -7,18 +7,20 @@ import {
 import { DiceValueArray } from './Die';
 import { FarkleLogic } from './FarkleLogic';
 import { Player } from './player';
+import { ThrowConditionsArray, generateThrowCondition } from './throwConditions';
 
 
 export type gameContext = {
   players: Array<Player>,
   player: number;
+  _throwConditions: ThrowConditionsArray;
   dice: DiceValueArray;
   scores: Array<number>;
   frozen: Array<boolean>;
   frozenThisRoll: Array<boolean>;
   turnScore: number;
   scoreThisRoll: number;
-  _firstTo10k: number
+  _firstTo10k: number;
   winner: null | number
 };
 
@@ -65,14 +67,15 @@ export const createFarkleGame = (players: Array<Player>) => {
       context: {
         players,
         player: 0,
-        dice: new Array(6).fill(0),
+        dice: new Array(FarkleLogic.DICE_COUNT).fill(0),
         scores: new Array(players.length).fill(0),
-        frozen: new Array(6).fill(false),
+        frozen: new Array(FarkleLogic.DICE_COUNT).fill(false),
         frozenThisRoll: new Array(6).fill(false),
         turnScore: 0,
         scoreThisRoll: 0,
         winner: null,
         _firstTo10k: -1,
+        _throwConditions: new Array(FarkleLogic.DICE_COUNT).fill(generateThrowCondition(-1))
       },
       states: {
         idle: {

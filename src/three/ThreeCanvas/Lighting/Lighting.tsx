@@ -1,5 +1,5 @@
 import React from 'react';
-import { SPOTLIGHT_HEIGHT, SPOTLIGHT_RADIUS } from '../../constants';
+import { SPOTLIGHT_HEIGHT, SPOTLIGHT_RADIUS } from '../../../constants';
 import { range } from '../../../util/range';
 
 type LightingProps = {

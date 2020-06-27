@@ -2,7 +2,7 @@ import * as THREE from 'three';
 import { useThree } from 'react-three-fiber';
 import { useEffect, useState } from 'react';
 import { round } from '../util/round';
-import { DIE_SIZE } from '../three/constants';
+import { DIE_SIZE } from '../constants';
 
 export const useCameraToGroundCoords = (cameraX: number, cameraY: number):THREE.Vector3 => {
   const {camera, raycaster, scene} = useThree();

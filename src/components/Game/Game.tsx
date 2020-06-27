@@ -74,7 +74,7 @@ const InternalGameComponent = ({current, send, bots}: InternalGameComponentProps
           scores={current.context.scores}
           currentPlayer={current.context.player}
         />
-        {/* <button className="log-button" onClick={() => logState()}>Log</button> */}
+        <button className="log-button" onClick={() => logState()}>Log</button>
         <button className="log-button" onClick={() => debug()}>Debug</button>
 
         <FarkleBotComponent 
@@ -91,7 +91,23 @@ type GameProps = {
   players: Array<Player>,
 }
 const Game = ({ players }: GameProps) => {
+
+  /** 
+   * 
+   * TODO:
+   * Move the machine creation to middleware (RxJS webSocket?)
+   * Get `current` and `send` objects from the middleware
+   * Communicate with the machine through middleware
+   * 
+   * Game will then be 2 components, OnlineGame and LocalGame
+   * Both will use InternalGameComponent
+   * -- InternalGameComponent will need to know which player is the local player
+   * -- in addition to which are bots
+   * 
+   */   
+
   try {
+    // Try creating a machine 
     const [current, send] = useMachine(createFarkleGame(players));
     const bots = players
       .map((p, i) => { return { t: p.type, i } })
@@ -99,6 +115,7 @@ const Game = ({ players }: GameProps) => {
       .map(ti => ti.i)
     return <InternalGameComponent current={current} send={send} bots={bots}/>
   } catch (error) {
+    // go back home if we can't create the machine
     return <Redirect to="/" />
   }
 }

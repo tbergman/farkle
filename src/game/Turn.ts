@@ -1,20 +1,16 @@
 import { StatesConfig, send, assign, ActionObject, ActionFunction, ConditionPredicate } from "xstate";
-// import { Player } from "./Player";
-// import { GameDice, DiceArray } from "./GameDice";
-// import { Subject, from, Observable, ObservableInput } from "rxjs";
 import {FarkleLogic} from './FarkleLogic';
-import { DieValue, DiceValueArray } from "./Die";
+import { DiceValueArray } from "./Die";
 import {gameContext, gameEvent} from './Farkle';
-
+import { generateThrowCondition } from "./throwConditions";
 
 const initialDice: DiceValueArray = [0, 0, 0, 0, 0, 0];
 const initialFrozen = [false, false, false, false, false, false];
 
 /**
  * 
- * HEPERS
+ * HELPERS
  */
-const dieRoll = (): DieValue => (Math.round(Math.random() * 5) + 1) as DieValue;
 
 export const getFrozen = (dice: DiceValueArray, frozen: Array<boolean>) => {
   return dice.filter((_, i) => !!frozen[i]);
@@ -35,7 +31,8 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
   start: {
     on: {
       ROLL: {
-        target: 'rolling',
+        actions: 'setThrowConditions',
+        target: 'rolling'
       },
     },
   },
@@ -49,20 +46,6 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
         }
       ]
     }
-    // entry: [
-    //   'rollUnfrozen',
-    // ],
-    // after: {
-    //   100: [
-    //     {
-    //       target: 'observing',
-    //       cond: 'isValidMoveAvailable',
-    //     },
-    //     {
-    //       target: 'farkle',
-    //     },
-    //   ],
-    // }
   },
 
   observing: {
@@ -178,16 +161,12 @@ export const turnGuards: turnGuard = {
 type turnAction = Record<string, | ActionObject<gameContext, gameEvent> | ActionFunction<gameContext, gameEvent>>
 export const turnActions: turnAction = {
 
-  setDice: assign({
-    dice: (c,e) => e.type === 'SET_DICE' ? e.values : [...initialDice]
+  setThrowConditions: assign({
+    _throwConditions: (c,e) => c.dice.map((_, i) => generateThrowCondition(i))
   }),
 
-  rollUnfrozen: assign({
-    dice: (c,e) => {
-      return c.frozen.map((f, i) => {
-        return !f ? dieRoll() : c.dice[i]
-      });
-    }
+  setDice: assign({
+    dice: (c,e) => e.type === 'SET_DICE' ? e.values : [...initialDice]
   }),
 
   doFreeze: assign({

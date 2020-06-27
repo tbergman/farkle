@@ -5,7 +5,7 @@ import Camera from '../../three/ThreeCanvas/Camera';
 import OrbitControlsComponent from '../../three/ThreeCanvas/OrbitControls';
 import { CannonContextProvider } from '../../three/CannonContext';
 import Ground from '../../three/Ground';
-import { GROUND_SIZE } from '../../three/constants';
+import { GROUND_SIZE } from '../../constants';
 import '../../style/global.scss'
 import DiceGrid from './DiceGrid';
 

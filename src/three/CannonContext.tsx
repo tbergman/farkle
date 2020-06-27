@@ -2,7 +2,7 @@
 import * as CANNON from 'cannon';
 import React, {useEffect, useState } from 'react';
 import { useFrame} from 'react-three-fiber';
-import { GRAVITY, FPS } from './constants';
+import { GRAVITY, FPS } from '../constants';
 import { dieGroundContactMaterial, dieDieContactMaterial, frozenDieContactMaterial, frozenGroundContactMaterial } from './materials';
 
 type CannonContextProps = {

@@ -9,7 +9,7 @@ import { State } from 'xstate';
 import { gameContext, gameEvent } from '../../game/Farkle';
 import { usePrevious } from '../../hooks/usePrevious';
 import OrbitControlsComponent from './OrbitControls';
-import { CAMERA_POSITION, SPOTLIGHT_POSITION, GROUND_SIZE } from '../constants';
+import { CAMERA_POSITION, GROUND_SIZE } from '../../constants';
 import Camera from './Camera';
 import Lighting from './Lighting';
 import Boundary from '../Boundary';
@@ -91,11 +91,11 @@ const FarkleThreeCanvas = ({
               <Die3DComponent
                 key={id}
                 id={id}
-                // value={dieValues[id]}
                 turnState={Object.values(gameState.value)[0]}
                 isFrozen={frozenDice[id]}
                 setValue={(v: DieValue) => setValueForDie(id, v)}
                 onFreeze={(e: THREE.Event) => handleFreeze(id)}
+                throwConditions={gameState.context._throwConditions[id]}
               />
             ))}
         </CannonContextProvider>
