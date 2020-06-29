@@ -1,0 +1,22 @@
+{
+  "name": "farkle-server",
+  "version": "1.0.0",
+  "main": "index.js",
+  "license": "MIT",
+  "scripts": {
+    "dev": "nodemon --watch 'src/**/*.ts' --exec ts-node src/index.ts",
+    "build": "tsc src/index.ts"
+  },
+  "dependencies": {
+    "@types/express": "^4.17.6",
+    "@types/socket.io": "^2.1.8",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
+    "socket.io": "^2.3.0",
+    "xstate": "^4.10.0"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4",
+    "typescript": "^3.9.5"
+  }
+}

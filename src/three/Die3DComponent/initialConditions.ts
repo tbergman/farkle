@@ -1,5 +1,5 @@
 import * as CANNON from 'cannon';
-import { DIE_SIZE, THROW_SPEED, THROW_POSITION, EULER_ORDER } from '../constants';
+import { DIE_SIZE, THROW_SPEED, THROW_POSITION, EULER_ORDER } from '../../constants';
 // units in mm & grams
 
 const _scale = DIE_SIZE
@@ -71,7 +71,6 @@ export const throwConditions = (id: number) => {
     2 * Math.PI * Math.random(),
     EULER_ORDER
   );
-
 
   return {position, quaternion, velocity, angularVelocity};
 

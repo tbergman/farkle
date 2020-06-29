@@ -9,13 +9,14 @@ import { getDieValue } from './getDieValue';
 import { StateValue } from 'xstate';
 import { hasSettled, forceSettle } from './hasSettled';
 import { DieValue } from '../../game/Die';
-import { throwConditions, initialConditions } from './initialConditions';
+import { initialConditions } from './initialConditions';
 import { usePrevious } from '../../hooks/usePrevious';
-import { DIE_MASS, DIE_SIZE, FPS, EULER_ORDER } from '../constants';
+import { DIE_MASS, DIE_SIZE, FPS, EULER_ORDER } from '../../constants';
 import { dieMaterial, frozenMaterial } from '../materials';
-import {useCameraToGroundCoords} from '../../hooks/useCameraToGroundCoords';
-import { ConvertVector, Vec3Array } from '../../util/vectorConvert';
+import { useCameraToGroundCoords } from '../../hooks/useCameraToGroundCoords';
+import { Vec3Array, V3 } from '../../util/vectorConvert';
 import { quat2Euler } from '../../util/quat2Euler';
+import { ThrowCondition } from '../../game/throwConditions';
 
 const max_seconds_to_settle = 2;
 
@@ -25,8 +26,9 @@ type dieProps = {
   turnState: StateValue,
   onFreeze: Function,
   setValue: Function,
+  throwConditions?: ThrowCondition
   position?: CANNON.Vec3 | THREE.Vector3,
-  rotation?: Vec3Array
+  rotation?: Vec3Array,
 }
 
 const InternalDie3DComponent = ({
@@ -35,6 +37,7 @@ const InternalDie3DComponent = ({
   turnState, 
   setValue, 
   onFreeze,
+  throwConditions,
   position,
   rotation
 }: dieProps) => {
@@ -46,8 +49,8 @@ const InternalDie3DComponent = ({
   const freezePosition = useCameraToGroundCoords( -5/8 + (2/8 * id), 0.7);
   const isNewRoll = useRef(false)
 
+  // set the die geometry
   if (!dieGeom) { setDieGeom(dieGltf.scene.clone(true));}
-  
   useEffect(() => {
     dieGeom?.traverse((obj) => {
       if (obj instanceof THREE.Mesh) {
@@ -57,6 +60,7 @@ const InternalDie3DComponent = ({
     });
   }, [dieGeom]);
 
+  // Initialize physics
   const {ref, body} = useCannon(
     {
       id,
@@ -73,10 +77,13 @@ const InternalDie3DComponent = ({
   );
   const bodyRef = useRef(body)
 
+
+  // Set initial position
   useEffect(() => {
-    if (!!position) body.position = ConvertVector.toCannon(position)
+    if (!!position) body.position = V3.toCannon(position)
   }, [body.position, position])
 
+  // Set initial rotation
   useEffect(() => {
     if (!!rotation) body.quaternion.setFromEuler(rotation[0], rotation[1], rotation[2], EULER_ORDER)
   }, [body.quaternion, rotation])
@@ -87,16 +94,19 @@ const InternalDie3DComponent = ({
       console.log('Rolling');
       isNewRoll.current = true;
       if (material) material.visible = true
-      bodyRef.current.position = throwConditions(id).position;
-      bodyRef.current.quaternion = throwConditions(id).quaternion;
-      bodyRef.current.velocity = throwConditions(id).velocity;
-      bodyRef.current.angularVelocity = throwConditions(id).angularVelocity;
+      if (throwConditions) {
+        console.log(throwConditions)
+        bodyRef.current.quaternion.setFromEuler(...throwConditions.rotation);
+        bodyRef.current.position = V3.toCannon(throwConditions.position);
+        bodyRef.current.velocity = V3.toCannon(throwConditions.velocity);
+        bodyRef.current.angularVelocity = V3.toCannon(throwConditions.angularVelocity);
+      }
       setFramesSinceRoll(0)
     } else if (turnState === 'start') {
       bodyRef.current.position = initialConditions(id).position;
       if (material) material.visible = false
     }
-  }, [turnState, prevTurnState, isFrozen, id, setValue, material]);
+  }, [turnState, prevTurnState, isFrozen, id, setValue, material, throwConditions]);
 
 
   // When the die has settled, 
@@ -130,13 +140,7 @@ const InternalDie3DComponent = ({
       if (isFrozen) {
         material.emissive = new THREE.Color(0x0088ff);
         bodyRef.current.material = frozenMaterial
-        bodyRef.current.position = ConvertVector.toCannon(freezePosition);
-        
-        // new CANNON.Vec3(
-        //   formation(id).x - 1,
-        //   formation(id).y - 1,
-        //   formation(id).z
-        // )
+        bodyRef.current.position = V3.toCannon(freezePosition);
       } else {
         material.emissive = new THREE.Color(0x000000);
         bodyRef.current.material = dieMaterial

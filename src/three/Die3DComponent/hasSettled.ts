@@ -1,6 +1,6 @@
 import * as CANNON from 'cannon';
 import { round } from '../../util/round';
-import { EULER_ORDER } from '../constants';
+import { EULER_ORDER } from '../../constants';
 import { quat2Euler } from '../../util/quat2Euler';
 
 /**

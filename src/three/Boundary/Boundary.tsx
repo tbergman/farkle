@@ -3,9 +3,8 @@ import * as CANNON from 'cannon';
 import * as THREE from 'three';
 import { useCannon } from '../../hooks/useCannon';
 import { groundMaterial } from '../materials';
-import { ConvertVector } from '../../util/vectorConvert';
+import { V3 } from '../../util/vectorConvert';
 import { useCameraToGroundCoords } from '../../hooks/useCameraToGroundCoords';
-//import { Test } from './Boundary.styles';
 
 type TSide = 'top' | 'right' | 'bottom' | 'left' 
 
@@ -61,7 +60,7 @@ const BoundaryPlane = ({coords}: BoundaryPlaneProps) => {
     const mpx = Math.min(a.x, b.x) + Math.abs((a.x - b.x))/2
     const mpy = Math.min(a.y, b.y) + Math.abs(a.y - b.y) / 2;
     const mp = new THREE.Vector3(mpx, mpy, 0)
-    body.position.set(...ConvertVector.toArray(mp));
+    body.position.set(...V3.toArray(mp));
   }, [body.position, coords])
 
 
