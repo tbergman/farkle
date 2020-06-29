@@ -3,10 +3,12 @@
   "compilerOptions": {
     "target": "ES2015",
     "module": "commonjs",
-    "outDir": "./dist",
+    "outDir": "./build",
+    "rootDir": "./src",
     "strict": true,
     "esModuleInterop": true,
     "noImplicitAny": false,
     "isolatedModules": false
-  }
+  },
+  "include": ["src"]
 }

@@ -1,0 +1,69 @@
+{
+  "name": "farkle",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@fortawesome/fontawesome-svg-core": "^1.2.29",
+    "@fortawesome/free-solid-svg-icons": "^5.13.1",
+    "@fortawesome/react-fontawesome": "^0.1.11",
+    "@testing-library/jest-dom": "^4.2.4",
+    "@testing-library/react": "^9.3.2",
+    "@testing-library/user-event": "^7.1.2",
+    "@types/cannon": "^0.1.4",
+    "@types/jest": "^24.0.0",
+    "@types/mathjs": "^6.0.5",
+    "@types/node": "^12.0.0",
+    "@types/react": "^16.9.34",
+    "@types/react-dom": "^16.9.7",
+    "@xstate/react": "^0.8.1",
+    "cannon": "^0.6.2",
+    "cannon-es": "^0.9.1",
+    "classnames": "^2.2.6",
+    "lodash": "^4.17.15",
+    "node-sass": "^4.13.1",
+    "react": "^16.13.1",
+    "react-dom": "^16.13.1",
+    "react-router-dom": "^5.2.0",
+    "react-scripts": "3.4.1",
+    "react-three-fiber": "^4.1.1",
+    "stylelint": "^13.3.3",
+    "stylelint-8-point-grid": "^0.2.6",
+    "stylelint-order": "^4.0.0",
+    "three": "^0.115.0",
+    "typescript": "~3.7.2",
+    "use-cannon": "^0.4.4",
+    "use-subscription": "^1.4.1",
+    "xstate": "^4.9.1"
+  },
+  "scripts": {
+    "start": "react-scripts start",
+    "build": "react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject",
+    "sim": "ts-node ./src/game/bots/FarkleSim.ts"
+  },
+  "eslintConfig": {
+    "extends": "react-app"
+  },
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  },
+  "devDependencies": {
+    "@types/classnames": "^2.2.10",
+    "@types/lodash": "^4.14.150",
+    "@types/react-router-dom": "^5.1.5",
+    "@types/use-subscription": "^1.0.0",
+    "stylelint-config-idiomatic-order": "^8.1.0",
+    "stylelint-config-standard": "^20.0.0",
+    "ts-node": "^8.9.0"
+  }
+}
