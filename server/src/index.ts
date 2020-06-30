@@ -14,6 +14,10 @@ const activeGames = {}
 
 const PORT = 4000
 
+app.get('/', (req, res) => {
+  res.sendFile('index.html')
+})
+
 // When a user hits /init, we create a new socket
 app.get('/init', (req, res) => {
   const roomCode = newRoomCode()

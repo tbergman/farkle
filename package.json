@@ -6,7 +6,7 @@
   "author": "Adam Thompson <athompson@newvisions.org>",
   "license": "MIT",
   "scripts": {
-    "postinstall": "cd server; yarn install; cd ../client; yarn install",
+    "postinstall": "cd server; yarn install",
     "build-client": "cd client; yarn build",
     "build-server": "cd server; yarn build"
   }
