@@ -12,7 +12,7 @@ const io = socketio(server)
 
 const activeGames = {}
 
-const PORT = 4000
+const PORT = process.env.PORT || 4000
 
 app.get('/', (req, res) => {
   res.sendFile(__dirname + '/index.html')
