@@ -41,7 +41,7 @@ const InternalDie3DComponent = ({
   position,
   rotation
 }: dieProps) => {
-  const dieGltf = useLoader(GLTFLoader, 'assets/die.glb');
+  const dieGltf = useLoader(GLTFLoader, '../assets/die.glb');
   const [dieGeom, setDieGeom] = useState<THREE.Group>();
   const [material, setMaterial] = useState<THREE.MeshStandardMaterial>();
   const [framesSinceRoll, setFramesSinceRoll] = useState(0);

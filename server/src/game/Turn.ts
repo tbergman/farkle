@@ -63,6 +63,7 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
       },
       ROLL: {
         target: 'rolling',
+        actions: 'setThrowConditions',
         cond: 'canRollAgain',
       },
       END_TURN: {
@@ -101,14 +102,14 @@ export const turnStates: StatesConfig<gameContext, any, gameEvent> = {
 type turnGuard = Record<string, ConditionPredicate<gameContext, gameEvent>>
 export const turnGuards: turnGuard = {
 
-  isValidMoveAvailable: (c, e)  => {
+  isValidMoveAvailable: (c, e): boolean  => {
     const validExists = FarkleLogic.doesValidMoveExist(
       getUnfrozen(c.dice, c.frozen)
     );
     return validExists
   },
 
-  isFarkle: (c, e) => {
+  isFarkle: (c, e): boolean => {
     const validExists = FarkleLogic.doesValidMoveExist(
       getUnfrozen(c.dice, c.frozen)
     );
@@ -162,7 +163,10 @@ type turnAction = Record<string, | ActionObject<gameContext, gameEvent> | Action
 export const turnActions: turnAction = {
 
   setThrowConditions: assign({
-    _throwConditions: (c,e) => c.dice.map((_, i) => generateThrowCondition(i))
+    _throwConditions: (c,e) => {
+      console.log('Setting throw conditions')
+      return c.dice.map((_, i) => generateThrowCondition(i))
+    }
   }),
 
   setDice: assign({

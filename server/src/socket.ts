@@ -6,31 +6,39 @@ import { Player, newPlayer } from './game/player';
 export const initSocket = (io: SocketIO.Namespace, allGames: { [key: string]: SocketIO.Namespace }) => {
   let Game: gameMachine;
   let GameService: Interpreter<gameContext, any, gameEvent>
-  let Players: Array<Player> = []
+  let players: Array<Player> = []
 
   io.on('connection', socket => {
     console.log(`A user connected to ${io.name}`)
     socket.send('Opened connection')
+    let player: Player;
     
     socket.on('join', (user: {name: string}) => {
       console.log(user)
-      io.emit('message', `${user.name} joined`)
-      Players.push(newPlayer(Players.length, user.name))
-      console.log(Players)
+      player = newPlayer(players.length, user.name)
+      players.push(player)
+      console.log(players)
+      io.emit('players', players)
     })
 
     socket.on('action', (action: gameEvent | { type: 'START_GAME' }) => {
       // When we receive an action from the client
       // Forward that on to the game machine
-
+      console.log('Received action', action)
       if(action.type === "START_GAME") {
-        Game = createFarkleGame(Players)
+        Game = createFarkleGame(players)
         GameService = interpret(Game)
         GameService.start()
-        io.emit('update', Game.context)
+        GameService.onTransition(state => {
+          io.emit('update', JSON.stringify(state))
+        })
       } else {
         GameService.send(action)
       }
+    })
+
+    socket.on('disconnect', () => {
+      console.log(`${player.name} disconnected`)
     })
 
   })

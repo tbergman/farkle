@@ -1,33 +1,31 @@
 import React, { useState } from 'react';
 import GameInstructions from './GameInstructions';
 import { Player } from '../../game/player';
-import GameConfig from './GameConfig';
+import LocalGameConfig from './LocalGameConfig';
 import './GameIntro.styles.scss'
+import RemoteGameConfig from './RemoteGameConfig';
 
 type GameIntroProps = {
-  startGame(players: Array<Player>): void
+  // startGame(players: Array<Player>): void,
+  // source: 'server' | 'client',
+  // setSource(source: 'server' | 'client'): void
+  children: React.ReactNode
 }
 
-type GameSource = 'server' | 'client'
-
-const GameIntro = ({startGame}: GameIntroProps) => {
+const GameIntro = ({ children }: GameIntroProps) => {
   const [showInstructions, setShowInstructions] = useState(false)
-  const [gameSource, setGameSource] = useState<GameSource>('client')  
 
   return (
     <div className="intro-container">
       <section className="game-intro">
         <div className="intro-header">
           <h1 className="title">Farkle</h1>
-          {gameSource === 'client' && <GameConfig startGame={startGame} /> }
-          {gameSource === 'server' && <div></div>}
+          {children}
           <button 
             className="text-button" 
             onClick={() => {setShowInstructions(!showInstructions)}}>
               {showInstructions ? 'Hide' : 'Show'} instructions
           </button>
-          {gameSource === 'client' && <button className="text-button" onClick={() => setGameSource('server')}>Play online</button>}
-          {gameSource === 'server' && <button className="text-button" onClick={() => setGameSource('client')}>Play on this device</button>}
         </div>
         {showInstructions && <GameInstructions />}
       </section>

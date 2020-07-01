@@ -19,6 +19,13 @@
     filter: brightness(90%);
   }
 
+  &.small {
+    min-width: 72px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
   // &.tooltip:hover::after {
   //   @include elevation(8);
     

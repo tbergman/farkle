@@ -4,8 +4,6 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { 
   faMinus, 
   faPlus, 
-  // faUser, 
-  // faLaptop
 } from '@fortawesome/free-solid-svg-icons'
 import { Player, newPlayer, playerType } from '../../../game/player';
 import GameButton from '../../GameButton';
@@ -16,7 +14,7 @@ type GameConfigProps = {
   startGame(players: Array<Player>): void
 }
 
-const GameConfig = ({ startGame }: GameConfigProps) => {
+const LocalGameConfig = ({ startGame }: GameConfigProps) => {
   const [players, setPlayers] = useState<Array<Player>>([newPlayer(0), newPlayer(1)])
 
   const countPlayers = () => players.length
@@ -105,4 +103,4 @@ const GameConfig = ({ startGame }: GameConfigProps) => {
   )
 }
 
-export default GameConfig;
+export default LocalGameConfig;

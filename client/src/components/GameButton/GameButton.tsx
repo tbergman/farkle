@@ -8,12 +8,13 @@ type buttonProps = {
   children: React.ReactNode
   id?: string,
   className?: string,
+  size?: 'small' | 'large',
   tooltip?: string,
   isDisabled?: boolean
 }
-const GameButton = ({ onClick, id, className, isDisabled, tooltip, children }: buttonProps) => (
+const GameButton = ({ onClick, id, className, size, isDisabled, tooltip, children }: buttonProps) => (
   <button 
-    className={classNames("gameButton", {'disabled': isDisabled}, {'tooltip': !!tooltip}, className)} 
+    className={classNames("gameButton", {'disabled': isDisabled}, {'tooltip': !!tooltip}, size, className)} 
     id={id}
     onClick={onClick}
     title={tooltip}

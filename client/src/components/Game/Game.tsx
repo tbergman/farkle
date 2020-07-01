@@ -90,7 +90,7 @@ const InternalGameComponent = ({current, send, bots}: InternalGameComponentProps
 type GameProps = {
   players: Array<Player>,
 }
-const Game = ({ players }: GameProps) => {
+export const LocalGame = ({ players }: GameProps) => {
 
   /** 
    * 
@@ -120,4 +120,14 @@ const Game = ({ players }: GameProps) => {
   }
 }
 
-export default Game;
+// TODO => `current` is being sent as gameContext
+// server needs to sent the current state
+type RemoteGameProps = {
+  current: any,//State<gameContext, gameEvent, any, any>
+  send(type: string, payload?: any): any
+}
+export const RemoteGame = ({current, send}: RemoteGameProps) => {
+  console.log('Received new state')
+  const sentEvent = send as Interpreter<gameContext, any, gameEvent>['send']
+  return <InternalGameComponent current={current} send={sentEvent} />
+}
