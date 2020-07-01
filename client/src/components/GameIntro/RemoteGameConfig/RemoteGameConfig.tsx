@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState } from 'react';
 import GameButton from '../../GameButton';
 import { Player } from '../../../game/player';
 import './RemoteGameConfig.styles.scss';
@@ -12,7 +12,6 @@ type GameConfigProps = {
 }
 
 const RemoteGameConfig = ({ roomCode, players, connect, create, start }: GameConfigProps) => {
-  const [isHost, setIsHost] = useState(true)
   const [code, setCode] = useState('')
   const [name, setName] = useState('')
 

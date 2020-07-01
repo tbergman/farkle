@@ -1,14 +1,8 @@
 import React, { useState } from 'react';
 import GameInstructions from './GameInstructions';
-import { Player } from '../../game/player';
-import LocalGameConfig from './LocalGameConfig';
 import './GameIntro.styles.scss'
-import RemoteGameConfig from './RemoteGameConfig';
 
 type GameIntroProps = {
-  // startGame(players: Array<Player>): void,
-  // source: 'server' | 'client',
-  // setSource(source: 'server' | 'client'): void
   children: React.ReactNode
 }
 

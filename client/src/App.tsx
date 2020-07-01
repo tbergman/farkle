@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import GameIntro from './components/GameIntro';
 import './App.scss';
 import {
@@ -16,7 +16,7 @@ import { gameContext, gameEvent } from './game/Farkle';
 import { LocalGame, RemoteGame } from './components/Game/Game';
 import { State } from 'xstate';
 
-// type GameHost = 'server' | 'client'
+const serverURL = process.env.NODE_ENV === 'development' ? "http://localhost:4000" : "https://thesonofthomp-farkle-server.herokuapp.com/"
 
 const AppRouterContext = () => {
   const socket = useRef<SocketIOClient.Socket>()
@@ -34,7 +34,7 @@ const AppRouterContext = () => {
   }
 
   const connect = (code: string, name: string) => {
-    socket.current = io.connect(`http://localhost:4000/${code}`)
+    socket.current = io.connect(`${serverURL}/${code}`)
     socket.current.on('connect', () => {
       console.log('Connected')
       if(socket.current) {
@@ -55,7 +55,8 @@ const AppRouterContext = () => {
   }
 
   const createGame = (name: string) => {
-    fetch('http://localhost:4000/init')
+    console.log(process.env)
+    fetch(`${serverURL}/init`)
       .then(resp => resp.json())
       .then(data => {
         console.log(`Created new room ${data.roomCode}`)

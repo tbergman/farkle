@@ -42,7 +42,7 @@ const InternalGameComponent = ({current, send, bots, player}: InternalGameCompon
       console.log(current.context.players, player)
       setIsPlayersTurn(currentPlayer.name === player || (!!bots && !bots?.includes(current.context.player)))
     }
-  }, [current, send])
+  }, [current, send, bots, player])
 
   const sendGameEvent = useCallback(send, [])
 
