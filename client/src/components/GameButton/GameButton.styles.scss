@@ -1,0 +1,53 @@
+@import '../../style/mixins';
+
+.gameButton {
+  @include elevation(1);
+
+  position: relative;
+  min-width: 96px;
+  height: 48px;
+  border: 4px ridge var(--color-primary);
+  background-color: var(--color-primary);
+  border-radius: 12px;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: 20px;
+  font-weight: bold;
+  pointer-events: all;
+
+  &:hover:not(.disabled) {
+    border-color: var(--color-primary-dark);
+    background-color: var(--color-primary-dark);
+  }
+
+  &.small {
+    min-width: 72px;
+    height: 32px;
+    border-radius: 8px;
+    font-size: 16px;
+  }
+
+  &.tooltip:hover::after {
+    @include elevation(8);
+
+    position: absolute;
+    top: calc(100% + 1em);
+    // right: 0;
+    left: 50%;
+    width: clamp(80%, 12ch, 200%);
+    padding: 0.5em;
+    background: white;
+    border-radius: 4px;
+    color: var(--color-text);
+    content: attr(data-tooltip);
+    font-size: 0.8rem;
+    transform: translateX(-50%);
+  }
+
+  &.disabled {
+    border: 4px ridge var(--color-primary-light);
+    background-color: var(--color-primary-light);
+    // color: var(--color-primary-darker);
+    cursor: not-allowed;
+  }
+}

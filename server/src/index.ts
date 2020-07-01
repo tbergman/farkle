@@ -9,18 +9,21 @@ const app = express()
 app.use(cors())
 const server = http.createServer(app)
 const io = socketio(server)
+const PORT = process.env.PORT || 4000
 
-const activeGames = {}
+const activeGames: {[key:string] : SocketIO.Namespace} = {}
 
-const PORT = 4000
+app.get('/', (req, res) => {
+  res.sendFile(__dirname + '/index.html')
+})
 
 // When a user hits /init, we create a new socket
 app.get('/init', (req, res) => {
   const roomCode = newRoomCode()
   const gameIO = io.of(`/${roomCode}`)
-  activeGames[roomCode] = gameIO
-  initSocket(gameIO)
-  res.send({roomCode})
+  activeGames[roomCode] = gameIO // There could be a collision here, but not likely
+  initSocket(gameIO, activeGames)
+  res.send({ roomCode })
 });
 
 server.listen(PORT, () => {

@@ -1,0 +1,32 @@
+/* your css code */
+
+.remote-config {
+  #player-picker-form {
+    --row-height: auto;
+
+    .player-picker-form-field {
+      display: grid;
+      align-items: center;
+      grid-template-columns: unset;
+      grid-template-rows: 1fr auto;
+      justify-items: left;
+    }
+  }
+
+  .player-picker-buttons {
+    display: grid;
+    width: 100%;
+    align-items: center;
+    gap: 8px;
+    grid-template-columns: 1fr min-content 1fr;
+  }
+  // #join-button {
+  //   width: 100%;
+  // }
+}
+
+.remote-lobby {
+  #room-code {
+    margin: 0;
+  }
+}
