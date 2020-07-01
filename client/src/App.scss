@@ -8,6 +8,7 @@ body {
   @include CornerToCornerGradient($green, $green-dark);
 
   background-color: $green;
+  color: var(--color-text);
 }
 
 .App {

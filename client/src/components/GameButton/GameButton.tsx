@@ -10,15 +10,17 @@ type buttonProps = {
   className?: string,
   size?: 'small' | 'large',
   tooltip?: string,
-  isDisabled?: boolean
+  isDisabled?: boolean,
+  disabledTooltip?: string,
+  disabledAction?: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void
 }
-const GameButton = ({ onClick, id, className, size, isDisabled, tooltip, children }: buttonProps) => (
+const GameButton = ({ onClick, id, className, size, isDisabled, tooltip, disabledTooltip, disabledAction, children }: buttonProps) => (
   <button 
     className={classNames("gameButton", {'disabled': isDisabled}, {'tooltip': !!tooltip}, size, className)} 
     id={id}
     onClick={onClick}
-    title={tooltip}
-    data-tooltip={tooltip}
+    title={(isDisabled && disabledTooltip) ? disabledTooltip : tooltip}
+    data-tooltip={(isDisabled && disabledTooltip) ? disabledTooltip : tooltip}
     disabled={isDisabled}
   >{children}</button>
 );

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { useMachine } from '@xstate/react';
 import { createFarkleGame, gameContext, gameEvent } from '../../game/Farkle';
 import FarkleThreeCanvas from '../../three/ThreeCanvas';
@@ -17,11 +17,13 @@ import './Game.styles.scss';
 type InternalGameComponentProps = {
   current: State<gameContext, gameEvent>,
   send: Interpreter<gameContext, any, gameEvent>['send'],
+  player?: string,
   bots?: Array<number>
 }
-const InternalGameComponent = ({current, send, bots}: InternalGameComponentProps) => {
+const InternalGameComponent = ({current, send, bots, player}: InternalGameComponentProps) => {
 
   const turnState = Object.values(current.value)[0];
+  const [isPlayersTurn, setIsPlayersTurn] = useState(false)
 
   const logState = () => {console.log(current)}
   const debug = () => {
@@ -35,7 +37,10 @@ const InternalGameComponent = ({current, send, bots}: InternalGameComponentProps
     } else if (current.matches('end_game')) {
       console.log('Game over', current.context)
     } else {
-      // console.log(current)
+      console.log(current)
+      const currentPlayer = current.context.players[current.context.player]
+      console.log(current.context.players, player)
+      setIsPlayersTurn(currentPlayer.name === player || (!!bots && !bots?.includes(current.context.player)))
     }
   }, [current, send])
 
@@ -64,10 +69,11 @@ const InternalGameComponent = ({current, send, bots}: InternalGameComponentProps
             playerId={current.context.player}
             turnScore={current.context.scoreThisRoll}
           />
-          <GameButtons 
-            turnState={turnState} 
-            sendGameEvent={sendGameEvent} 
-          />
+          {isPlayersTurn &&
+            <GameButtons 
+              turnState={turnState} 
+              sendGameEvent={sendGameEvent} 
+            />}
         </div>
         <ScoreTable
           names={current.context.players.map(p => p.name)}
@@ -124,10 +130,11 @@ export const LocalGame = ({ players }: GameProps) => {
 // server needs to sent the current state
 type RemoteGameProps = {
   current: any,//State<gameContext, gameEvent, any, any>
-  send(type: string, payload?: any): any
+  send(type: string, payload?: any): any,
+  player: string
 }
-export const RemoteGame = ({current, send}: RemoteGameProps) => {
+export const RemoteGame = ({current, send, player}: RemoteGameProps) => {
   console.log('Received new state')
   const sentEvent = send as Interpreter<gameContext, any, gameEvent>['send']
-  return <InternalGameComponent current={current} send={sentEvent} />
+  return <InternalGameComponent current={current} send={sentEvent} player={player}/>
 }

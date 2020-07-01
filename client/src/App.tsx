@@ -21,6 +21,7 @@ import { State } from 'xstate';
 const AppRouterContext = () => {
   const socket = useRef<SocketIOClient.Socket>()
   const [players, setPlayers] = useState<Array<Player>>([])
+  const [thisPlayer, setThisPlayer] = useState<string>('')
   const [isConnectedTo, setIsConnectedTo] = useState<string>('')
   const [remoteState, setRemoteState] = useState<State<gameContext, gameEvent, any, any>>()
 
@@ -40,6 +41,7 @@ const AppRouterContext = () => {
         socket.current.emit('join', { name })
       }
       setIsConnectedTo(code)
+      setThisPlayer(name)
     })
 
     socket.current.on('players', (players: Array<Player>) => {
@@ -83,7 +85,7 @@ const AppRouterContext = () => {
       </Route>
 
       <Route path="/play/online">
-          <RemoteGame current={remoteState} send={sendRemoteAction}/>
+          <RemoteGame current={remoteState} send={sendRemoteAction} player={thisPlayer}/>
       </Route>
 
       <Route path="/online">

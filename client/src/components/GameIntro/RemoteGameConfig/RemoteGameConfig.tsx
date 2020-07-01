@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import GameButton from '../../GameButton';
 import { Player } from '../../../game/player';
-//import { Test } from './RemoteGameConfig.styles';
+import './RemoteGameConfig.styles.scss';
 
 type GameConfigProps = {
   roomCode: string,
@@ -20,11 +20,23 @@ const RemoteGameConfig = ({ roomCode, players, connect, create, start }: GameCon
   const createGame = () => { create(name) }
 
   return (
-    <>
+    <div className="remote-config">
       {!roomCode &&
         <>
         <h3>Join game</h3>
-          <div id="player-picker-form">
+        <div id="player-picker-form">
+          <div className="player-picker-form-field">
+            <label htmlFor="code">Room Code</label>
+            <input
+              className="player-form-input"
+              id="code"
+              type="text"
+              value={code}
+              onChange={e => setCode(e.target.value)}
+              placeholder="4-letter room code"
+            />
+          </div>
+          <div className="player-picker-form-field">
             <label htmlFor="name">Name</label>
             <input
               className="player-form-input"
@@ -32,27 +44,34 @@ const RemoteGameConfig = ({ roomCode, players, connect, create, start }: GameCon
               type="text"
               value={name}
               onChange={e => setName(e.target.value)}
+              placeholder="Enter your name"
             />
-
-            <label htmlFor="code">Code</label>
-            <input
-              className="player-form-input"
-              id="code"
-              type="text"
-              value={code}
-              onChange={e => setCode(e.target.value)}
-            />
-            <GameButton size="small" onClick={joinGame} >Join</GameButton>
-            <div>
-              <label htmlFor="create">or</label>
-              <GameButton size="small" onClick={createGame} >Create Game</GameButton>
-            </div>
           </div>
+          <div className="player-picker-buttons">
+            <GameButton 
+              size="small" 
+              onClick={joinGame} 
+              isDisabled={!(name && code)}
+              tooltip="Join the game"
+              disabledTooltip="Enter a name and game code"
+            >Join</GameButton>
+            <label htmlFor="create">or</label>
+            <GameButton 
+              size="small" 
+              onClick={createGame}
+              isDisabled={!name} 
+              tooltip="Create a new game"
+              disabledTooltip="Enter a name"
+            >Create Game</GameButton>
+          </div>
+          <div className="player-picker-form-field">
+          </div>
+        </div>
         </>
       }
       {roomCode &&
-        <>
-        <h2>Room Code: {roomCode}</h2>
+        <div className="remote-lobby">
+        <div id="room-code-wrapper">Room Code: <h2 id="room-code">{roomCode}</h2></div>
         <h3>Playing with</h3>
           {
             players.map(player => {
@@ -63,9 +82,9 @@ const RemoteGameConfig = ({ roomCode, players, connect, create, start }: GameCon
           }
         <GameButton onClick={start} >Start Game</GameButton>
 
-        </>
+        </div>
       }
-    </>
+    </div>
   );
 }
 

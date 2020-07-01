@@ -15,8 +15,9 @@
   font-weight: bold;
   pointer-events: all;
 
-  &:hover {
-    filter: brightness(90%);
+  &:hover:not(.disabled) {
+    border-color: var(--color-primary-dark);
+    background-color: var(--color-primary-dark);
   }
 
   &.small {
@@ -26,28 +27,27 @@
     font-size: 16px;
   }
 
-  // &.tooltip:hover::after {
-  //   @include elevation(8);
-    
-  //   position: absolute;
-  //   top: calc(100% + 1em);
-  //   right: 0;
-  //   width: clamp(50%, 12ch, 200%);
-  //   padding: 0.5em;
-  //   background: white;
-  //   border-radius: 4px;
-  //   content: attr(data-tooltip);
-  //   font-size: 0.8rem;
-  // }
+  &.tooltip:hover::after {
+    @include elevation(8);
+
+    position: absolute;
+    top: calc(100% + 1em);
+    // right: 0;
+    left: 50%;
+    width: clamp(80%, 12ch, 200%);
+    padding: 0.5em;
+    background: white;
+    border-radius: 4px;
+    color: var(--color-text);
+    content: attr(data-tooltip);
+    font-size: 0.8rem;
+    transform: translateX(-50%);
+  }
 
   &.disabled {
     border: 4px ridge var(--color-primary-light);
     background-color: var(--color-primary-light);
+    // color: var(--color-primary-darker);
     cursor: not-allowed;
-    pointer-events: none;
-
-    &.hover {
-      filter: brightness(100%);
-    }
   }
 }
