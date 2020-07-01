@@ -16,7 +16,7 @@ import { gameContext, gameEvent } from './game/Farkle';
 import { LocalGame, RemoteGame } from './components/Game/Game';
 import { State } from 'xstate';
 
-const serverURL = process.env.NODE_ENV === 'development' ? "http://localhost:4000" : "https://thesonofthomp-farkle-server.herokuapp.com/"
+const serverURL = process.env.NODE_ENV === 'development' ? "http://localhost:4000" : "https://thesonofthomp-farkle-server.herokuapp.com"
 
 const AppRouterContext = () => {
   const socket = useRef<SocketIOClient.Socket>()
